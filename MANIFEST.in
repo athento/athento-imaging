@@ -1,0 +1,8 @@
+include setup.py
+include setup.cfg
+include README.md
+include tests/*.py
+recursive-include docs *.md *.txt
+exclude dist
+include resources/*.jpg
+include resources/*.png
