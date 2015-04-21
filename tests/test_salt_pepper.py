@@ -1,6 +1,6 @@
 import pytest
 import os
-from pydoccv.salt_pepper import clean
+from athentoimaging.salt_pepper import clean
 
 class Test_SP:
 
