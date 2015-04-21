@@ -1,14 +1,14 @@
 import cv2 as cv
 import numpy as np
 import os
-
+import img_utils as iu
 
 def detect_lines(input_file,
                  min_val=50, max_val=200, aperture_size=3,
                  rho=1, theta=np.pi/180, threshold=200):
 
     if min_val < max_val:
-        image = get_image(input_file)
+        image = iu.get_image(input_file)
         check_canny_args(min_val, max_val, aperture_size)
         check_houghlines_args(rho, theta, threshold)
 
@@ -36,7 +36,7 @@ def delete_all_lines(input_file,
                      rho=1, theta=np.pi/180, threshold=200,
                      line_length=1000, width=5, color=(255, 255, 255)):
 
-    image = get_image(input_file)
+    image = iu.get_image(input_file)
 
     check_canny_args(min_val, max_val, aperture_size)
     check_houghlines_args(rho, theta, threshold)
@@ -92,7 +92,7 @@ def distance_mean(lines, line_length=1000):
 
 def draw_lines(input_file, lines, line_length=1000, width=5, color=(0, 0, 255)):
 
-    image = get_image(input_file)
+    image = iu.get_image(input_file)
     check_lines(lines)
     check_line_length(line_length)
     check_width(width)
@@ -177,26 +177,12 @@ def parallels(line1, line2, line_length=1000, error=5):
 
 #Checking arguments
 
-def get_image(input_file):
-    if input_file == '' or input_file is None:
-            raise ValueError("Input_file must be different than '' or None.")
-
-    image = input_file
-
-    if isinstance(input_file, str):
-        if os.path.isfile(input_file) is False:
-            raise IOError("Input file not found.")
-        image = cv.imread(input_file)
-
-    return image
-
-
 def check_color(color):
-
     if (color[0] < 0 or color[0] > 255 or color[1] < 0 or color[1] > 255 or
                 color[2] < 0 or color[2] > 255):
         raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
     return 0
+
 
 def check_canny_args(min_val, max_val, aperture_size):
 

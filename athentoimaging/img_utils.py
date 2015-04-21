@@ -1,10 +1,37 @@
 import cv2 as cv
+import numpy as np
+import os
 
 """
 This script contains auxilary functions to be used during development.
 Functions contained in this script probably won't be necessary in the product's
 integration.
 """
+
+def file_exists(input_file):
+    """
+    :param input_file: path to the input file
+    :return: true or false wether the file exists or not.
+    """
+    if input_file == '':
+        raise IOError("The input file can't be ''.")
+    if input_file is None:
+        raise IOError("The input file can't be a None object")
+
+    return os.path.isfile(input_file)
+
+
+def get_image(input_file):
+
+    image = input_file
+
+    if not isinstance(input_file, np.array):
+        if file_exists(image):
+            raise IOError("Input file not found.")
+        image = cv.imread(input_file)
+
+    return image
+
 
 def save_img(image, output_name, question):
 

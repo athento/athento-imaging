@@ -2,6 +2,7 @@ import cv2 as cv
 import os
 import argparse
 import threshold as th
+import img_utils as iu
 
 """
 This script cleans an image with salt and pepper noise (ie: text dotted due to
@@ -17,12 +18,10 @@ def clean(input_file,  thresh_val = [250, 245, 240, 230, 225, 220],
     kernel_size = int(kernel_size)
 
     #Checking arguments and raising expected exceptions
-    check_arguments(input_file, window_size, kernel_size)
+    check_arguments(window_size, kernel_size)
 
     # Loading the image
-    image = input_file
-    if isinstance(image, str):
-        image = cv.imread(input_file)
+    image = iu.get_image(input_file)
 
     # Applying Grayscale, Gaussian and median blur and erode
     image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
@@ -36,17 +35,7 @@ def clean(input_file,  thresh_val = [250, 245, 240, 230, 225, 220],
     return results
 
 
-def check_arguments(input_file, window_size, kernel_size):
-
-    if input_file == '':
-        raise IOError("Input file can't be ''.")
-
-    if input_file is None:
-        raise IOError("Input file can't be None.")
-
-    if os.path.isfile(input_file) is False:
-        raise IOError("Input file not found.")
-
+def check_arguments(window_size, kernel_size):
     if kernel_size < 0:
         raise ValueError("Kernel size value must be greater than 0.")
 
