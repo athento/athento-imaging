@@ -7,16 +7,16 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
  
 setup(
-    name = 'pydoccv',
+    name = 'athento-imaging',
     version = '0.1',
-    packages = ['pydoccv'],
+    packages = ['athento-imaging'],
     include_package_data = True,
     license = 'Athento Shared Source License',
     description = 'Image cleaning and OCR improvement package in Python using OpenCV.',
     long_description = README,
     url = 'http://www.athento.com/',
-    author = 'Daniel Ramirez Torres',
-    author_email = 'dramireztorres@gmail.com',
+    author = 'Daniel Ramirez Torres, Jose Luis de la Rosa',
+    author_email = 'dramireztorres@gmail.com, jlr@athento.com',
     classifiers =[
         'Development Status :: 3 - Alpha'
         'Environment :: Other Environment',
