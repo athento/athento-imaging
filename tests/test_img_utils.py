@@ -1,6 +1,6 @@
 import pytest
 import os
-import pydoccv.img_utils as iu
+import athentoimaging.img_utils as iu
 import cv2 as cv
 
 

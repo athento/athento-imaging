@@ -1,6 +1,6 @@
 import pytest
 import os
-from pydoccv.bg_color import clean
+from athentoimaging.bg_color import clean
 
 class Test_BGC:
 

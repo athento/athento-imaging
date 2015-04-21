@@ -1,6 +1,6 @@
 import pytest
 import os
-import pydoccv.lines_detection_p as ld
+import athentoimaging.lines_detection_p as ld
 import numpy as np
 
 class Test_LD:

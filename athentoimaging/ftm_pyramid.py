@@ -2,6 +2,7 @@ import cv2 as cv
 import numpy as np
 import argparse
 import os
+import img_utils as iu
 
 """
 This script performs a fast template matching algorithm using the OpenCV
@@ -9,7 +10,9 @@ function matchTemplate plus an approximation through pyramid construction to
 improve it's performance on large images.
 """
 
-def buildPyramid(image, max_level):
+def buildPyramid(input_file, max_level):
+
+    image = iu.get_image(input_file)
 
     results = [image]
     aux = image
@@ -24,6 +27,8 @@ def buildPyramid(image, max_level):
 def temp_match(input, template, max_level):
 
     results = []
+
+    input = iu.get_image(input)
 
     source_pyr = buildPyramid(input, max_level)
     template_pyr = buildPyramid(template, max_level)
@@ -78,14 +83,8 @@ def temp_match(input, template, max_level):
 
 def ftm_pyramid(input_file, template_file, max_level = 5):
 
-    if file_exists(input_file) is False:
-        raise IOError("Input file not found.")
-
-    if file_exists(template_file) is False:
-        raise IOError("Input file not found.")
-
-    img = cv.imread(input_file)
-    tpl = cv.imread(template_file)
+    img = iu.get_image(input_file)
+    tpl = iu.get_image(template_file)
 
     image = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     template = cv.cvtColor(tpl, cv.COLOR_BGR2GRAY)
@@ -112,21 +111,6 @@ def ftm_pyramid(input_file, template_file, max_level = 5):
     cv.imshow("Result", img)
     cv.waitKey()
     return 0
-
-
-# Auxiliary methods
-
-def file_exists(input_file):
-    """
-    :param input_file: path to the input file
-    :return: true or false wether the file exists or not.
-    """
-    if input_file == '':
-        raise ValueError("The input file can't be ''.")
-    if input_file == None:
-        raise ValueError("The input file can't be a None object")
-
-    return os.path.isfile(input_file)
 
 
 if __name__ == '__main__':

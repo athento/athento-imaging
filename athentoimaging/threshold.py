@@ -1,7 +1,7 @@
 import cv2 as cv
 import argparse
 import os
-
+import img_utils as iu
 
 """
 This script shows the results of applying threshold values to the input image
@@ -17,12 +17,9 @@ def apply(input_file, thresh_values=[250, 245, 240, 230, 225, 220]):
         thresh_values = [thresh_values]
 
     # Checking arguments and raising expected exceptions
-    check_arguments(input_file, thresh_values)
+    check_arguments(thresh_values)
 
-    # Loading the image
-    image = input_file
-    if isinstance(image, str):
-        image = cv.imread(input_file)
+    image = iu.get_image(input_file)
 
     results = []
 
@@ -33,16 +30,7 @@ def apply(input_file, thresh_values=[250, 245, 240, 230, 225, 220]):
     return results
 
 
-def check_arguments(input_file, thresh_values):
-
-    if input_file == '':
-        raise IOError("Input file can't be ''.")
-
-    if input_file is None:
-        raise IOError("Input file can't be None.")
-
-    if isinstance(input_file, str) and os.path.isfile(input_file) is False:
-        raise IOError("Input file not found.")
+def check_arguments(thresh_values):
 
     for i, value in enumerate(thresh_values):
         if int(value) < 0 or int(value) > 255:

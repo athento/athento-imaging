@@ -2,6 +2,7 @@ import argparse
 import cv2 as cv
 import threshold as th
 import os
+import img_utils as iu
 
 """
 This script allows to clean an image with noisy background (ie: coloured
@@ -16,12 +17,10 @@ def clean(input_file, thresh_val = [225, 220, 215, 210, 205, 200],
         window_size = int(window_size)
 
         # Checking arguments and raising expected exceptions
-        check_arguments(input_file, window_size)
+        check_arguments(window_size)
 
         # Loading the image
-        image = input_file
-        if isinstance(image, str):
-            image = cv.imread(input_file)
+        image = iu.get_image(input_file)
         
         # Gray-scale and Gaussian Blur
         image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
@@ -33,16 +32,7 @@ def clean(input_file, thresh_val = [225, 220, 215, 210, 205, 200],
         return results
 
 
-def check_arguments(input_file, window_size):
-    if input_file == '':
-        raise IOError("Input file can't be ''.")
-
-    if input_file is None:
-        raise IOError("Input file can't be None.")
-
-    if os.path.isfile(input_file) is False:
-        raise IOError("Input file not found.")
-
+def check_arguments(window_size):
     if window_size < 0:
         raise ValueError("Window size value must be greater than 0")
 

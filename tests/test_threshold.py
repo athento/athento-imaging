@@ -1,6 +1,6 @@
 import pytest
 import os
-from pydoccv.threshold import apply
+from athentoimaging.threshold import apply
 import cv2 as cv
 
 
