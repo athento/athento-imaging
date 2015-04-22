@@ -37,3 +37,23 @@ class Test_TH:
         with pytest.raises(ValueError) as exc:
             apply(self.test_image, 270)
         assert exc.value.message == "All threshold values must be between 0 and 255"
+
+    def test_th_negative_new_value(self):
+        with pytest.raises(ValueError) as exc:
+            apply(self.test_image, new_value=-10)
+        assert exc.value.message == "New_value must be between 0 and 255."
+
+    def test_th_over_new_value(self):
+        with pytest.raises(ValueError) as exc:
+            apply(self.test_image, new_value=256)
+        assert exc.value.message == "New_value must be between 0 and 255."
+
+    def test_th_negative_th_type(self):
+        with pytest.raises(ValueError) as exc:
+            apply(self.test_image, thresh_type=-10)
+        assert exc.value.message == "Thresh_type must be between 0 and 4."
+
+    def test_th_over_th_type(self):
+        with pytest.raises(ValueError) as exc:
+            apply(self.test_image, thresh_type=5)
+        assert exc.value.message == "New_value must be between 0 and 4."

@@ -100,12 +100,14 @@ def draw_lines(input_file, lines, line_length=1000, width=5, color=(0, 0, 255)):
 
     if np.size(lines) == 1:
         x1, y1, x2, y2 = get_line_coordinates(lines, line_length)
-        cv.line(image, (x1, y1), (x2, y2), width, color)
+        cv.line(image, (x1, y1), (x2, y2), color, width)
 
-    elif isinstance(lines, list):
+    else:
         for l in lines[0]:
             x1, y1, x2, y2 = get_line_coordinates(l, line_length)
-            cv.line(image, (x1, y1), (x2, y2), width, color)
+            p1 = (x1, y1)
+            p2 = (x2, y2)
+            cv.line(image, p1, p2, color, width)
 
     return image
 
@@ -146,7 +148,7 @@ def line_count(lines, line_length=1000, error=5):
             h_lines += 1
         total += 1
 
-    elif isinstance(lines, list):
+    else:
         for l in lines[0]:
             x1, y1, x2, y2 = get_line_coordinates(l, line_length)
             if x1 in range(x2-error, x2+error):

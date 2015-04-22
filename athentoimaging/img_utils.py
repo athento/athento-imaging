@@ -21,14 +21,14 @@ def file_exists(input_file):
     return os.path.isfile(input_file)
 
 
-def get_image(input_file):
+def get_image(input_file, mode=1):
 
     image = input_file
 
-    if not isinstance(input_file, np.array):
-        if file_exists(image):
+    if not isinstance(input_file, np.ndarray):
+        if not file_exists(image):
             raise IOError("Input file not found.")
-        image = cv.imread(input_file)
+        image = cv.imread(input_file, mode)
 
     return image
 
