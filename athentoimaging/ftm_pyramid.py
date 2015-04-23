@@ -18,25 +18,27 @@ def buildPyramid(input_file, max_level):
     aux = image
 
     for i in range(0,max_level):
-        aux = cv.pyrDown(aux)
+        aux = cv.pyrDown(aux, (aux.shape[1]/2, aux.shape[0]/2))
         results = [aux] + results
 
     return results
 
 
-def temp_match(input, template, max_level):
+def temp_match(input_file, template, max_level):
 
     results = []
 
-    input = iu.get_image(input)
-
-    source_pyr = buildPyramid(input, max_level)
+    source_pyr = buildPyramid(input_file, max_level)
     template_pyr = buildPyramid(template, max_level)
 
     for lvl in range(0, int(max_level), 1):
 
         curr_image = source_pyr[lvl]
         curr_template = template_pyr[lvl]
+
+        cv.imshow("TEMPLATE", curr_template)
+        cv.waitKey()
+        cv.destroyAllWindows()
 
         dX = curr_image.shape[1] + 1 - curr_template.shape[1]
         dY = curr_image.shape[0] + 1 - curr_template.shape[0]
