@@ -11,7 +11,7 @@ def detect_contours(input_file, thresh_val=127):
     gray = iu.get_image(input_file, 0)
 
     #Threshold to delete noise
-    11thresh = th.apply(gray, thresh_val, thresh_type=1)
+    thresh = th.apply(gray, thresh_val, thresh_type=1)
     thresh = thresh[0]
 
     #Dilate and blur to improve the contours

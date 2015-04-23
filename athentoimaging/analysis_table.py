@@ -10,7 +10,7 @@ def analyze_all(files, min_length=1000, line_length=1000, line_error=5):
     results = []
 
     for i in files:
-        #print "Processing ", i
+        print "Processing ", i
         results = results + [get_analysis_results(i, min_length, line_length, line_error)]
 
     return results
@@ -29,9 +29,9 @@ def get_analysis_results(input_file, min_length=1000, line_length=1000, line_err
         #coordinates = []
         squares = aa.get_square_number(contours, min_length)
         for c in contours:
-            dimension = aa.get_contour_dimension(c)
-            area = aa.get_contour_area(c)
-            #coordinates = aa.get_contour_coord(c)
+            dimension = dimension + [aa.get_contour_dimension(c)]
+            area = area + [aa.get_contour_area(c)]
+            #coordinates = coordinates + [aa.get_contour_coord(c)]
 
     else:
         dimension = -1
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     if line_length is None:
         line_length = 1000
     """
-    files = ["../../../../page22-02.png", "../../../../page-03.png", "../../../../page-04.png", "../../../../page-05.png",
+    files = ["../../../../page-02.png", "../../../../page-03.png", "../../../../page-04.png", "../../../../page-05.png",
              "../../../../page-06.png", "../../../../page-12.png", "../../../../page-13.png", "../../../../page-14.png",
              "../../../../page-23.png", "../../../../page-24.png", "../../../../page-25.png", "../../../../page-27.png",
              "../../../../page-28.png", "../../../../page-31.png", "../../../../page-32.png", "../../../../page-35.png",
