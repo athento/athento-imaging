@@ -3,15 +3,14 @@ import os
 import athentoimaging.img_utils as iu
 import cv2 as cv
 
-
 class Test_SaveImg:
 
     test_image = cv.imread(os.path.abspath(os.path.join(os.path.dirname(
-                            "__file__"), "resources/", "test_image.png")))
+                            "__file__"), "../resources/", "test_image.png")))
 
     """
     This test might have to be overwritten during final implementation on the
-    product as the input sistem probably won't be the same.
+    product as the input system probably won't be the same.
 
     #Everything works ok
     def test_save_img_good(self):

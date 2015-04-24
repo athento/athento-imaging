@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 import os
+import math
 
 """
 This script contains auxilary functions to be used during development.
@@ -31,6 +32,37 @@ def get_image(input_file, mode=1):
         image = cv.imread(input_file, mode)
 
     return image
+
+
+def split_image(input_file, split_x=3, split_y=2):
+
+    image = get_image(input_file)
+
+    x = image.shape[1]
+    inc_x = math.floor(x/split_x)
+
+    y = image.shape[0]
+    inc_y = math.floor(y/split_y)
+
+    results = []
+
+    for column in range(0, split_x):
+        current_x = column*inc_x
+        next_x = current_x+inc_x
+        if next_x > x:
+            next_x = x
+
+        for row in range(0, split_y):
+            current_y = row*inc_y
+            next_y = current_y+inc_y
+            if next_y > y:
+                next_y = y
+
+            aux1 = [current_y, next_y]
+            aux2 = [current_x, next_x]
+            results = [[aux1, aux2]] + results
+
+    return results
 
 
 def save_img(image, output_name, question):

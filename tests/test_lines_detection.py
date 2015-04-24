@@ -6,7 +6,7 @@ import numpy as np
 class Test_LD:
 
         test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                              "resources/", "lines.jpg"))
+                                              "../resources/", "lines.jpg"))
         lines = ld.detect_lines(test_image)
 
     # Tests of detect_line
@@ -16,16 +16,14 @@ class Test_LD:
             assert len(r) >= 0
 
         def test_detect_lines_file_void(self):
-            with pytest.raises(ValueError) as exc:
+            with pytest.raises(IOError) as exc:
                 ld.detect_lines('')
-            assert exc.value.message == "Input_file must be different than '' " \
-                                        "or None."
+            assert exc.value.message == "The input file can't be ''."
 
         def test_detect_lines_file_none(self):
-            with pytest.raises(ValueError) as exc:
+            with pytest.raises(IOError) as exc:
                 ld.detect_lines(None)
-            assert exc.value.message == "Input_file must be different than '' " \
-                                        "or None."
+            assert exc.value.message == "The input file can't be a None object"
 
         def test_detect_lines_file_not_found(self):
             with pytest.raises(IOError) as exc:
@@ -84,7 +82,7 @@ class Test_LD:
 
         def test_delete_lines_good(self):
             lines = ld.detect_lines(self.test_image)
-            r = ld.delete_lines(self.test_image, lines[0][0])
+            r = ld.delete_lines(self.test_image, lines)
             assert isinstance(r, np.ndarray)
 
         def test_delete_lines_lines_none(self):
@@ -113,16 +111,14 @@ class Test_LD:
             assert isinstance(ld.delete_all_lines(self.test_image), np.ndarray)
 
         def test_delete_all_lines_file_void(self):
-            with pytest.raises(ValueError) as exc:
+            with pytest.raises(IOError) as exc:
                 ld.delete_all_lines('')
-            assert exc.value.message == "Input_file must be different than '' " \
-                                        "or None."
+            assert exc.value.message == "The input file can't be ''."
 
         def test_delete_all_lines_file_none(self):
-            with pytest.raises(ValueError) as exc:
+            with pytest.raises(IOError) as exc:
                 ld.delete_all_lines(None)
-            assert exc.value.message == "Input_file must be different than '' " \
-                                        "or None."
+            assert exc.value.message == "The input file can't be a None object"
 
         def test_delete_all_lines_file_not_found(self):
             with pytest.raises(IOError) as exc:
@@ -244,17 +240,17 @@ class Test_LD:
             assert isinstance(ld.draw_lines(self.test_image, self.lines), np.ndarray)
 
         def test_draw_lines_good_single_line(self):
-            assert isinstance(ld.draw_lines(self.test_image, self.lines[0][0]), np.ndarray)
+            assert isinstance(ld.draw_lines(self.test_image, [self.lines[0]]), np.ndarray)
 
         def test_draw_lines_file_void(self):
-            with pytest.raises(ValueError) as exc:
+            with pytest.raises(IOError) as exc:
                 ld.draw_lines('', self.lines)
-            assert exc.value.message == "Input_file must be different than '' or None."
+            assert exc.value.message == "The input file can't be ''."
 
         def test_draw_lines_file_none(self):
-            with pytest.raises(ValueError) as exc:
+            with pytest.raises(IOError) as exc:
                 ld.draw_lines(None, self.lines)
-            assert exc.value.message == "Input_file must be different than '' or None."
+            assert exc.value.message == "The input file can't be a None object"
 
         def test_draw_lines_line_length_negative(self):
             with pytest.raises(ValueError) as exc:
