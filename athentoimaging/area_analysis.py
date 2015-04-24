@@ -99,9 +99,6 @@ def get_model(input_file, split_x=3, split_y=3):
     image = cv.pyrDown(image)
     image = cv.pyrUp(image)
 
-    mean = get_gray_intensity(image)
-    std = np.std(image)
-
     coordinates = iu.split_image(image, split_x, split_y)
 
     results = []
@@ -116,7 +113,7 @@ def get_model(input_file, split_x=3, split_y=3):
 
         intensity = get_gray_intensity(crop)
 
-        if intensity > 250:
+        if intensity >= 250:
             results = results + [0]
         else:
             results = results + [1]
@@ -146,7 +143,7 @@ if __name__ == '__main__':
     print get_contour_area(contours[0])
     print get_square_number(contours, min_length)
     print get_contour_coord(contours[0])
-    print get_gray_intensity_analysis(input_file, 5, 3)
+    print get_gray_intensity_analysis(input_file, 3, 3)
     print get_model(input_file)
 
     cv.imshow("", draw_contours(input_file, contours))

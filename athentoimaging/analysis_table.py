@@ -8,7 +8,7 @@ def analyze_all(files, min_length=1000, line_length=1000, line_error=5):
     results = []
 
     for i in files:
-        print "Processing ", i
+        #print "Processing ", i
         results = results + [get_analysis_results(i, min_length, line_length, line_error)]
 
     return results
@@ -68,7 +68,7 @@ def show_table(table):
     first_line = ""
 
     for i in index:
-        first_line = i + ","
+        first_line = first_line + i + ","
 
     print first_line
 
@@ -113,7 +113,6 @@ if __name__ == '__main__':
              "../../../../page-36.png", "../../../../page-42.png", "../../../../page-43.png",
              "../../../../page-44.png", "../../../../page-45.png", "../../../../page-46.png"]
 
-    print files
     #D --> DNI
     #PC --> Permiso de conducir
     #FT --> Ficha tecnica
@@ -122,4 +121,4 @@ if __name__ == '__main__':
     show_table(analyze_all(files))
     
 
-    print time.time()-start
+    #print time.time()-start
