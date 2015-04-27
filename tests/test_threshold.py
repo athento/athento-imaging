@@ -7,7 +7,7 @@ import cv2 as cv
 class Test_TH:
 
     test_image = os.path.abspath(os.path.join(os.path.dirname(
-                            "__file__"), "resources/", "test_image.png"))
+                            "__file__"), "../resources/", "test_image.png"))
 
 
     #Single threshold value, everything works ok
@@ -24,7 +24,7 @@ class Test_TH:
     def test_th_img_none(self):
         with pytest.raises(IOError) as exc:
             apply(None, 150)
-        assert exc.value.message == "Input file can't be None."
+        assert exc.value.message == "The input file can't be a None object"
 
     #Error if threshold value is negative (only values between 0 and 255)
     def test_th_negative_thresh(self):
@@ -37,3 +37,23 @@ class Test_TH:
         with pytest.raises(ValueError) as exc:
             apply(self.test_image, 270)
         assert exc.value.message == "All threshold values must be between 0 and 255"
+
+    def test_th_negative_new_value(self):
+        with pytest.raises(ValueError) as exc:
+            apply(self.test_image, new_value=-10)
+        assert exc.value.message == "New_value must be between 0 and 255."
+
+    def test_th_over_new_value(self):
+        with pytest.raises(ValueError) as exc:
+            apply(self.test_image, new_value=256)
+        assert exc.value.message == "New_value must be between 0 and 255."
+
+    def test_th_negative_th_type(self):
+        with pytest.raises(ValueError) as exc:
+            apply(self.test_image, thresh_type=-10)
+        assert exc.value.message == "Threshold_type value must be between 0 and 4."
+
+    def test_th_over_th_type(self):
+        with pytest.raises(ValueError) as exc:
+            apply(self.test_image, thresh_type=5)
+        assert exc.value.message == "Threshold_type value must be between 0 and 4."

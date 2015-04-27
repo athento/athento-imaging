@@ -5,7 +5,7 @@ from athentoimaging.salt_pepper import clean
 class Test_SP:
 
     test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                              "resources/", "test_image.png"))
+                                              "../resources/", "test_image.png"))
 
     #Everything works ok
     def test_sp_good(self):
@@ -49,10 +49,10 @@ class Test_SP:
     def test_sp_input_none(self):
         with pytest.raises(IOError) as exc:
             clean(None, 250, 3, 3)
-        assert exc.value.message == "Input file can't be None."
+        assert exc.value.message == "The input file can't be a None object"
 
     #Error if input image is ''
     def test_sp_input_void(self):
         with pytest.raises(IOError) as exc:
             clean('', 250, 3, 3)
-        assert exc.value.message == "Input file can't be ''."
+        assert exc.value.message == "The input file can't be ''."

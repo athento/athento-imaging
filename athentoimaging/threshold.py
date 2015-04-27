@@ -10,31 +10,37 @@ can be used in the CLI.
 """
 
 
-def apply(input_file, thresh_values=[250, 245, 240, 230, 225, 220]):
+def apply(input_file, thresh_values=[250, 245, 240, 230, 225, 220], new_value=255, thresh_type=0):
 
     # If thresh is not a list of values transform it.
     if not isinstance(thresh_values, list):
         thresh_values = [thresh_values]
 
     # Checking arguments and raising expected exceptions
-    check_arguments(thresh_values)
+    check_arguments(thresh_values, new_value, thresh_type)
 
     image = iu.get_image(input_file)
 
     results = []
 
     for i in thresh_values:
-        th, img_thresh = cv.threshold(image, float(i), 255, cv.THRESH_BINARY)
+        th, img_thresh = cv.threshold(image, float(i), new_value, thresh_type)
         results = results + [img_thresh]
 
     return results
 
 
-def check_arguments(thresh_values):
+def check_arguments(thresh_values, new_value, thresh_type):
 
     for i, value in enumerate(thresh_values):
         if int(value) < 0 or int(value) > 255:
             raise ValueError("All threshold values must be between 0 and 255")
+
+    if new_value < 0 or new_value > 255:
+        raise ValueError("New_value must be between 0 and 255.")
+
+    if thresh_type < 0 or thresh_type > 4:
+        raise ValueError("Threshold_type value must be between 0 and 4.")
 
     return 0
 
