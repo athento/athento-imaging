@@ -8,12 +8,13 @@ def detect_lines(input_file,
                  rho=1, theta=np.pi/180, threshold=200):
 
     if min_val < max_val:
+        print input_file
         image = iu.get_image(input_file)
         check_canny_args(min_val, max_val, aperture_size)
         check_houghlines_args(rho, theta, threshold)
 
-        gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        edges = cv.Canny(gray, min_val, max_val, aperture_size)
+        #gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+        edges = cv.Canny(image, min_val, max_val, aperture_size)
         lines = cv.HoughLines(edges, rho, theta, threshold)
     else:
         lines = None
@@ -223,6 +224,8 @@ def check_error(error):
 
 
 def check_line(line):
+
+    print line
 
     if line is None:
         raise ValueError("Line must be a line, is None.")

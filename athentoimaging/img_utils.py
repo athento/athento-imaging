@@ -9,6 +9,14 @@ Functions contained in this script probably won't be necessary in the product's
 integration.
 """
 
+def pyramid_clean(image):
+
+    image = cv.pyrDown(image)
+    image = cv.pyrUp(image)
+
+    return image
+
+
 def file_exists(input_file):
     """
     :param input_file: path to the input file
@@ -79,7 +87,7 @@ def save_img(image, output_name, question):
     if output_name == '':
         raise ValueError("The value of the output name can't be ''.")
 
-    if output_name == None:
+    if output_name is None:
         raise ValueError("The output name can't be a None object.")
 
     #CHANGE THE NEXT FEW LINES TO CHANGE THE INPUT SYSTEM

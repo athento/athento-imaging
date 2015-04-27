@@ -3,14 +3,14 @@ import argparse
 import numpy as np
 import img_utils as iu
 import math
+import lines_detection as ld
 
 
 def detect_contours(input_file, thresh_val=255):
 
     gray = iu.get_image(input_file, 0)
-    
-    gray = cv.pyrDown(gray)
-    gray = cv.pyrUp(gray)
+
+    gray = iu.pyramid_clean(gray)
     
     th2 = cv.adaptiveThreshold(gray, thresh_val, cv.ADAPTIVE_THRESH_MEAN_C,
                                cv.THRESH_BINARY, 11, 2)
@@ -22,6 +22,33 @@ def detect_contours(input_file, thresh_val=255):
     contours, h = cv.findContours(th2, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
     
     return contours
+
+
+def get_corners(input_file, thresh_val=255):
+
+    gray = iu.get_image(input_file, 0)
+
+    gray = iu.pyramid_clean(gray)
+
+    th2 = cv.adaptiveThreshold(gray, thresh_val, cv.ADAPTIVE_THRESH_MEAN_C,
+                               cv.THRESH_BINARY, 11, 2)
+
+    th2 = cv.erode(th2, kernel=(15, 15), iterations=50)
+
+    th2 = cv.bitwise_not(th2)
+
+    cv.imshow("", th2)
+    cv.waitKey()
+
+    lines = ld.detect_lines(th2)
+
+    cv.imshow("", ld.draw_lines(th2, lines, color=(0, 0, 255)))
+    cv.waitKey()
+
+    cv.destroyAllWindows()
+
+    return 0
+
 
 
 def get_squares(contours, min_length=1000):
