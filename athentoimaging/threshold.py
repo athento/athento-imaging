@@ -10,36 +10,78 @@ can be used in the CLI.
 """
 
 
-def apply(input_file, thresh_values=[250, 245, 240, 230, 225, 220], new_value=255, thresh_type=0):
+def adaptive_gaussian_apply(input_file, max_val=255, thresh_type=0,
+                            block_size=11, c=5):
+    check_threshold(max_val)
+    check_thresh_type(thresh_type)
+    check_block_size(block_size)
+    check_c(c)
 
-    # If thresh is not a list of values transform it.
-    if not isinstance(thresh_values, list):
-        thresh_values = [thresh_values]
+    image = iu.get_image(input_file, 0)
+
+    return cv.adaptiveThreshold(image, max_val, cv.ADAPTIVE_THRESH_MEAN_C,
+                                cv.THRESH_BINARY, block_size, c)
+
+
+def adaptive_mean_apply(input_file, max_val=255, thresh_type=0,
+                        block_size=11, c=5):
+
+    check_threshold(max_val)
+    check_thresh_type(thresh_type)
+    check_block_size(block_size)
+    check_c(c)
+
+    image = iu.get_image(input_file, 0)
+
+    return cv.adaptiveThreshold(image, max_val, cv.ADAPTIVE_THRESH_MEAN_C,
+                                thresh_type, block_size, c)
+
+
+def apply(input_file, thresh_val=200, new_value=255, thresh_type=0):
 
     # Checking arguments and raising expected exceptions
-    check_arguments(thresh_values, new_value, thresh_type)
+    check_threshold(thresh_val)
+    check_threshold(new_value)
+    check_thresh_type(thresh_type)
 
-    image = iu.get_image(input_file)
+    image = iu.get_image(input_file, 0)
 
-    results = []
+    th, img_thresh = cv.threshold(image, thresh_val, new_value, thresh_type)
 
-    for i in thresh_values:
-        th, img_thresh = cv.threshold(image, float(i), new_value, thresh_type)
-        results = results + [img_thresh]
-
-    return results
+    return img_thresh
 
 
-def check_arguments(thresh_values, new_value, thresh_type):
+# CHECKING ARGUMENTS
 
-    for i, value in enumerate(thresh_values):
-        if int(value) < 0 or int(value) > 255:
-            raise ValueError("All threshold values must be between 0 and 255")
 
-    if new_value < 0 or new_value > 255:
-        raise ValueError("New_value must be between 0 and 255.")
+def check_block_size(block_size):
+    if block_size < 0:
+        raise ValueError("Window size value must be greater than 0")
 
-    if thresh_type < 0 or thresh_type > 4:
+    if block_size % 2 == 0:
+        raise ValueError("Window size value must be odd.")
+    return 0
+
+
+def check_c(c):
+
+    if not isinstance(c, int):
+        raise IOError("Constraint must be integer")
+
+    return 0
+
+
+def check_threshold(value):
+
+    if int(value) < 0 or int(value) > 255:
+        raise ValueError("All threshold values must be between 0 and 255")
+
+    return 0
+
+
+def check_thresh_type(value):
+
+    if int(value) < 0 or int(value) > 4:
         raise ValueError("Threshold_type value must be between 0 and 4.")
 
     return 0
