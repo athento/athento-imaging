@@ -75,8 +75,8 @@ if __name__ == '__main__':
         
         # Checking the input values:
         if thresh_val == None:
-                thresh_val = [250, 245, 240, 230, 225, 220]
-        
+                thresh_val = 200
+
         if window_size == None:
                 window_size = 5
         

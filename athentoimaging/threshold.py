@@ -20,7 +20,7 @@ def adaptive_gaussian_apply(input_file, max_val=255, thresh_type=0,
     image = iu.get_image(input_file, 0)
 
     return cv.adaptiveThreshold(image, max_val, cv.ADAPTIVE_THRESH_MEAN_C,
-                                cv.THRESH_BINARY, block_size, c)
+                                thresh_type, block_size, c)
 
 
 def adaptive_mean_apply(input_file, max_val=255, thresh_type=0,
@@ -103,6 +103,6 @@ if __name__ == '__main__':
 
         # Checking the input values:
         if thresh_val is None:
-                thresh_val = [250, 245, 240, 230, 225, 220]
+                thresh_val = 200
         
         apply(input_file, thresh_val)
