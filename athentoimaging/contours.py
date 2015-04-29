@@ -42,16 +42,7 @@ def delete_small_contours(contours, min_dimension=1000):
     return new_contours
 
 
-def detect_contours(input_file, min_dist=20, min_dimension=1000, thres_val=255):
-
-    c = detect_contours_simple(input_file, thres_val)
-    c2 = delete_small_contours(c, min_dimension)
-#    c3 = join_contours(c2, min_dist)
-
-    return c2
-
-
-def detect_contours_simple(input_file, thresh_val=255):
+def detect_contours(input_file, thresh_val=255):
 
     gray = iu.get_image(input_file, 0)
 
@@ -87,7 +78,7 @@ def detect_corners(input_file, max_corners=10, min_dist=50, trust_val=0.5):
     return corners
 
 
-def draw_contours(input_file, contours, thickness=0, color=(255, 0, 0)):
+def draw_contours(input_file, contours, thickness=0, color=(0, 0, 255)):
 
     image = iu.get_image(input_file)
 
@@ -100,13 +91,13 @@ def draw_contours(input_file, contours, thickness=0, color=(255, 0, 0)):
     return image
 
 
-def draw_corners(input_file, corners):
+def draw_corners(input_file, corners, radius=5, color=(0, 0, 255), thickness=-1):
 
     img = iu.get_image(input_file)
 
     for i in corners:
         x, y = i.ravel()
-        cv.circle(img, (x,y), 5, 255, -1)
+        cv.circle(img, (x,y), radius, color, thickness)
 
     return img
 
@@ -144,6 +135,8 @@ def get_square_number(contours, min_length=1000):
 
 
 def join_contours(contours, min_dist=20):
+
+    # Terrible efficiency
 
     length = len(contours)
     status = np.zeros((length, 1))
