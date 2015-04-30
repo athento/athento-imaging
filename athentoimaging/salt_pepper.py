@@ -9,7 +9,9 @@ This script cleans an image with salt and pepper noise (ie: text dotted due to
 bad pixel definition).
 """
 
-test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"), "../resources/", "test_image.png"))
+test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
+                                          "../resources/", "test_image.png"))
+
 
 def clean(input_file,  thresh_val=200, window_size=5, kernel_size=5):
     """
@@ -87,7 +89,6 @@ def check_kernel_size(kernel_size):
 
     if kernel_size % 2 == 0:
         raise ValueError("Kernel size value must be odd.")
-
     return 0
 
 
@@ -95,7 +96,6 @@ def check_threshold(value):
 
     if int(value) < 0 or int(value) > 255:
         raise ValueError("All threshold values must be between 0 and 255.")
-
     return 0
 
 
@@ -106,7 +106,6 @@ def check_window_size(window_size):
 
     if window_size % 2 == 0:
         raise ValueError("Window size value must be odd.")
-
     return 0
 
 
@@ -121,27 +120,27 @@ if __name__ == '__main__':
                         help="Path to the input file.")
         ap.add_argument("-t", "--threshold", 
                         help="Pixel value to threshold.")
-        ap.add_argument("-k", "--kernelsize", 
+        ap.add_argument("-k", "--kernel-size",
                         help="Kernel size used in erode operation.")
-        ap.add_argument("-w", "--windowsize", 
+        ap.add_argument("-w", "--window-size",
                         help="Odd value, size of the window used in the \
                         Gaussian Blur.")
         args = vars(ap.parse_args())
         
         # Loading values
         input_file = args["input"]
-        kernel_size = args["kernelsize"]
+        kernel_size = args["kernel-size"]
         thresh_val = args["threshold"]
-        window_size = args["windowsize"]
+        window_size = args["window-size"]
         
         # Checking the input values:
-        if thresh_val == None:
+        if thresh_val is None:
                 thresh_val = 200
 
-        if window_size == None:
+        if window_size is None:
                 window_size = 5
         
-        if kernel_size == None:
+        if kernel_size is None:
                 kernel_size = 5
         
         clean(input_file, thresh_val, window_size, kernel_size)

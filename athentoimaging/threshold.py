@@ -10,7 +10,8 @@ can be used in the CLI.
 """
 
 
-test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"), "../resources/", "test_image.png"))
+test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
+                                          "../resources/", "test_image.png"))
 
 
 def adaptive_gaussian_apply(input_file, max_val=255, thresh_type=0,
@@ -233,7 +234,6 @@ def check_c(c):
 
     if not isinstance(c, int):
         raise ValueError("Constraint must be integer.")
-
     return 0
 
 
@@ -241,7 +241,6 @@ def check_threshold(value):
 
     if int(value) < 0 or int(value) > 255:
         raise ValueError("All threshold values must be between 0 and 255.")
-
     return 0
 
 
@@ -249,7 +248,6 @@ def check_thresh_type(value):
 
     if int(value) < 0 or int(value) > 4:
         raise ValueError("Threshold_type value must be between 0 and 4.")
-
     return 0
 
 

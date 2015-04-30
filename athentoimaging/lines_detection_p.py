@@ -10,131 +10,6 @@ test_line1 = [2, 15, 5, 20]
 test_line2 = [4, 15, 6, 20]
 test_lines = [test_line1, test_line2]
 
-def detect_lines(input_file,
-                 min_val=50, max_val=200, aperture_size=3,
-                 rho=1, theta=np.pi/180, threshold=200,
-                 min_line_length=30, max_line_gap=20):
-    """
-    #>>> draw_lines(test_image, test_lines)
-    #TODO
-
-    >>> detect_lines(None)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    IOError: The input file can't be a None object
-
-    >>> detect_lines("")
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    IOError: The input file can't be ''.
-
-    >>> detect_lines("fakeRoute1")
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    IOError: Input file not found.
-
-    >>> detect_lines(test_image, min_val=-10)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Min_val value must be between 0 and 255.
-
-    >>> detect_lines(test_image, max_val=300)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Max_val value must be between 0 and 255.
-
-    >>> detect_lines(test_image, aperture_size=-3)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Aperture_size value must be greater than 0.
-
-    >>> detect_lines(test_image, rho=-3)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Rho value must be greater than 0.
-
-    >>> detect_lines(test_image, theta=-3)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Theta value must be greater than 0.
-
-    >>> detect_lines(test_image, threshold=-3)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Threshold value must be greater than 0.
-
-    >>> detect_lines(test_image, min_line_length=-3)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Min_line_length value must be greater than 0.
-
-    >>> detect_lines(test_image, max_line_gap=-3)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Max_line_gap value must be greater than 0.
-    """
-    if min_val < max_val:
-
-        image = iu.get_image(input_file)
-
-        check_canny_args(min_val, max_val, aperture_size)
-        check_houghlines_p_args(rho, theta, threshold,
-                              min_line_length, max_line_gap)
-
-        gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        edges = cv.Canny(gray, min_val, max_val, aperture_size)
-        lines = cv.HoughLinesP(edges, rho, theta, threshold,
-                               min_line_length, max_line_gap)
-    else:
-        lines = None
-
-    return lines
-
-
-def delete_lines(input_file, lines, width=5, color=(255, 255, 255)):
-    """
-    #>>> draw_lines(test_image, test_lines)
-    #TODO
-
-    >>> draw_lines(None, test_lines)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    IOError: The input file can't be a None object
-
-    >>> draw_lines("", test_lines)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    IOError: The input file can't be ''.
-
-    >>> draw_lines("fakeRoute", test_lines)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    IOError: Input file not found.
-
-    >>> draw_lines(test_image, None)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Lines can't be None.
-
-    >>> draw_lines(test_image, test_lines, width=-10)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Width value must be greater than 0.
-
-    >>> draw_lines(test_image, test_lines, color=(-10, 0, 0))
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Color value must be: (0-255, 0-255, 0-255).
-    """
-
-    check_lines(lines)
-    check_width(width)
-    check_color(color)
-
-    image = iu.get_image(input_file)
-
-    return draw_lines(image, lines, width, color)
-
 
 def delete_all_lines(input_file,
                      min_val=50, max_val=200, aperture_size=3,
@@ -231,6 +106,132 @@ def delete_all_lines(input_file,
                              min_line_length, max_line_gap)
 
     return image
+
+
+def delete_lines(input_file, lines, width=5, color=(255, 255, 255)):
+    """
+    #>>> draw_lines(test_image, test_lines)
+    #TODO
+
+    >>> draw_lines(None, test_lines)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be a None object
+
+    >>> draw_lines("", test_lines)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be ''.
+
+    >>> draw_lines("fakeRoute", test_lines)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: Input file not found.
+
+    >>> draw_lines(test_image, None)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Lines can't be None.
+
+    >>> draw_lines(test_image, test_lines, width=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Width value must be greater than 0.
+
+    >>> draw_lines(test_image, test_lines, color=(-10, 0, 0))
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Color value must be: (0-255, 0-255, 0-255).
+    """
+
+    check_lines(lines)
+    check_width(width)
+    check_color(color)
+
+    image = iu.get_image(input_file)
+
+    return draw_lines(image, lines, width, color)
+
+
+def detect_lines(input_file,
+                 min_val=50, max_val=200, aperture_size=3,
+                 rho=1, theta=np.pi/180, threshold=200,
+                 min_line_length=30, max_line_gap=20):
+    """
+    #>>> draw_lines(test_image, test_lines)
+    #TODO
+
+    >>> detect_lines(None)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be a None object
+
+    >>> detect_lines("")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be ''.
+
+    >>> detect_lines("fakeRoute1")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: Input file not found.
+
+    >>> detect_lines(test_image, min_val=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Min_val value must be between 0 and 255.
+
+    >>> detect_lines(test_image, max_val=300)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Max_val value must be between 0 and 255.
+
+    >>> detect_lines(test_image, aperture_size=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Aperture_size value must be greater than 0.
+
+    >>> detect_lines(test_image, rho=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Rho value must be greater than 0.
+
+    >>> detect_lines(test_image, theta=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Theta value must be greater than 0.
+
+    >>> detect_lines(test_image, threshold=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Threshold value must be greater than 0.
+
+    >>> detect_lines(test_image, min_line_length=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Min_line_length value must be greater than 0.
+
+    >>> detect_lines(test_image, max_line_gap=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Max_line_gap value must be greater than 0.
+    """
+    if min_val < max_val:
+
+        image = iu.get_image(input_file)
+
+        check_canny_args(min_val, max_val, aperture_size)
+        check_houghlines_p_args(rho, theta, threshold,
+                              min_line_length, max_line_gap)
+
+        gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+        edges = cv.Canny(gray, min_val, max_val, aperture_size)
+        lines = cv.HoughLinesP(edges, rho, theta, threshold,
+                               min_line_length, max_line_gap)
+    else:
+        lines = None
+
+    return lines
 
 
 def distance(line1, line2):
@@ -422,12 +423,6 @@ def parallels(line1, line2, error=5):
 
 #Checking arguments
 
-def check_color(color):
-
-    if (color[0] < 0 or color[0] > 255 or color[1] < 0 or color[1] > 255 or
-                color[2] < 0 or color[2] > 255):
-        raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
-    return 0
 
 def check_canny_args(min_val, max_val, aperture_size):
 
@@ -442,6 +437,21 @@ def check_canny_args(min_val, max_val, aperture_size):
 
     if aperture_size < 0:
         raise ValueError("Aperture_size value must be greater than 0.")
+    return 0
+
+
+def check_color(color):
+
+    if (color[0] < 0 or color[0] > 255 or color[1] < 0 or color[1] > 255 or
+                color[2] < 0 or color[2] > 255):
+        raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
+    return 0
+
+
+def check_error(error):
+
+    if error < 0:
+        raise ValueError("Error value must be positive (0 included).")
     return 0
 
 
@@ -461,13 +471,6 @@ def check_houghlines_p_args(rho, theta, threshold, min_line_length, max_line_gap
 
     if max_line_gap < 0:
         raise ValueError("Max_line_gap value must be greater than 0.")
-    return 0
-
-
-def check_error(error):
-
-    if error < 0:
-        raise ValueError("Error value must be positive (0 included).")
     return 0
 
 
