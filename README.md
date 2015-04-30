@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/rafaharo/athento-imaging.svg?branch=master)](https://travis-ci.org/rafaharo/athento-imaging)
+
 # Athento-imaging
 
 Athento-Imaging is a package developed using Python and OpenCV to improve OCR in
