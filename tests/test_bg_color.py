@@ -22,7 +22,7 @@ class Test_BGC:
     def test_bgc_input_void(self):
         with pytest.raises(IOError) as exc:
             clean(None, 200, 3)
-        assert exc.value.message == "The input file can't be a None object"
+        assert exc.value.message == "The input file can't be a None object."
 
     #Error if input file not found
     def test_bgc_input_not_found(self):
@@ -34,7 +34,7 @@ class Test_BGC:
     def test_bgc_window_size_negative(self):
         with pytest.raises(ValueError) as exc:
             clean(self.test_image, 200, -3)
-        assert exc.value.message == "Window size value must be greater than 0"
+        assert exc.value.message == "Window size value must be greater than 0."
 
     #Error if window_size is even:
     def test_bgc_window_size_even(self):

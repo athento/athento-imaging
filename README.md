@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/repos/55394aa2e30ba00af8001be9/badges/8ee3783737be9e27c1f0/gpa.svg)](https://codeclimate.com/repos/55394aa2e30ba00af8001be9/feed) 
+
 # Athento-imaging
 
 Athento-Imaging is a package developed using Python and OpenCV to improve OCR in

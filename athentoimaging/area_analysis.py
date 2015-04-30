@@ -1,151 +1,183 @@
 import cv2 as cv
-import argparse
 import numpy as np
 import img_utils as iu
 import math
+import os
+import argparse
+
+test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
+                                          "../resources/", "test_image.png"))
 
 
-def detect_contours(input_file, thresh_val=255):
+def get_gray_intensity(input_file):
+    """
+    #>>> get_gray_intensity(test_image)
+    #TODO
 
-    gray = iu.get_image(input_file, 0)
-    
-    gray = cv.pyrDown(gray)
-    gray = cv.pyrUp(gray)
-    
-    th2 = cv.adaptiveThreshold(gray, thresh_val, cv.ADAPTIVE_THRESH_MEAN_C,
-                               cv.THRESH_BINARY, 11, 2)
-    
-    th2 = cv.erode(th2, kernel=(5, 5), iterations=30)
+    >>> get_gray_intensity(None)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be a None object
 
-    th2 = cv.bitwise_not(th2)    
+    >>> get_gray_intensity("")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be ''.
 
-    contours, h = cv.findContours(th2, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
-    
-    return contours
+    >>> get_gray_intensity("fakeRoute")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: Input file not found.
+    """
+    image = iu.get_image(input_file, 0)
 
-
-def get_squares(contours, min_length=1000):
-
-    results = []
-
-    for cnt in contours:
-        approx = cv.approxPolyDP(cnt, 0.01*cv.arcLength(cnt, True), True)
-        if len(approx) >= 4 and abs(get_contour_dimension(approx)) >= min_length:
-            results = [approx] + results
-
-    return results
-
-
-def draw_contours(input_file, contours):
-
-    image = iu.get_image(input_file)
-
-    if contours is None:
-        raise ValueError("Contour can't be none, must be list")
-
-    for cnt in contours:
-        cv.drawContours(image, [cnt], 0, (255, 0, 0), 0)
-
-    return image
-
-
-def get_square_number(contours, min_length=1000):
-    return len(get_squares(contours, min_length))
-
-
-def get_contour_area(contour):
-    return math.floor(cv.contourArea(contour))
-
-
-def get_contour_coord(contour):
-    return contour
-
-
-def get_contour_dimension(contour, closed=1):
-    return math.floor(cv.arcLength(contour, closed))
-
-
-def get_gray_intensity(image):
     if not isinstance(image, np.ndarray):
         raise IOError("Image must be numpy array.")
     return math.floor(np.mean(image))
 
 
 def get_gray_intensity_analysis(input_file, split_x=3, split_y=3):
+    """
+    #>>> get_gray_intensity_analysis(test_image)
+    #TODO
 
+    >>> get_gray_intensity_analysis(None)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be a None object
+
+    >>> get_gray_intensity_analysis("")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be ''.
+
+    >>> get_gray_intensity_analysis("fakeRoute")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: Input file not found.
+
+    >>> get_gray_intensity_analysis(test_image, split_x=-1)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: The split value must be greater than 0.
+
+    >>> get_gray_intensity_analysis(test_image, split_y=-1)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: The split value must be greater than 0.
+    """
+
+    # Cheking arguments
+    check_split(split_x)
+    check_split(split_y)
+
+    # Loading the image
     image = iu.get_image(input_file)
 
     results = []
 
+    # Calculating split coords
     coordinates = iu.split_image(image, split_x, split_y)
 
+    # For each split, get it's gray intensity value.
     for i, coord in enumerate(coordinates):
         x1, x2 = coord[1]
         y1, y2 = coord[0]
 
         crop = image[x1:x2, y1:y2]
         if crop is None or crop == []:
-            print "Unexpected error while cropping the image."
+            raise Exception("Unexpected error while cropping the image.")
 
         intensity = get_gray_intensity(crop)
         results = [intensity] + results
 
     return results
 
-def get_model(input_file, split_x=3, split_y=3):
 
+def get_model(input_file, split_x=3, split_y=3):
+    """
+    #>>> get_gray_intensity_analysis(test_image)
+    #TODO
+
+    >>> get_gray_intensity_analysis(None)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be a None object
+
+    >>> get_gray_intensity_analysis("")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be ''.
+
+    >>> get_gray_intensity_analysis("fakeRoute")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: Input file not found.
+
+    >>> get_gray_intensity_analysis(test_image, split_x=-1)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: The split value must be greater than 0.
+
+    >>> get_gray_intensity_analysis(test_image, split_y=-1)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: The split value must be greater than 0.
+    """
+
+    # Loading the image
     image = iu.get_image(input_file)
 
-    image = cv.pyrDown(image)
-    image = cv.pyrUp(image)
+    mean = math.ceil(np.mean(image))
 
-    coordinates = iu.split_image(image, split_x, split_y)
+    results = get_gray_intensity(input_file, split_x, split_y)
 
-    results = []
-
-    for i, coord in enumerate(coordinates):
-        x1, x2 = coord[1]
-        y1, y2 = coord[0]
-
-        crop = image[x1:x2, y1:y2]
-        if crop is None or crop == []:
-            print "Unexpected error while cropping the image."
-
-        intensity = get_gray_intensity(crop)
-
-        if intensity >= 250:
-            results = results + [0]
+    for i, r in enumerate(results):
+        if r <= mean:
+            results[i] = 1
         else:
-            results = results + [1]
+            results[i] = 0
 
     return results
 
 
+# CHECKING ARGUMENTS
+
+
+def check_split(split):
+
+    split = int(split)
+
+    if split < 1:
+        raise ValueError("The split value must be greater than 0.")
+
+    return 0
+
+
+# CLI SETTINGS
+
+
 if __name__ == '__main__':
-    #CLI arguments
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-i", "--input", required="True",
-                    help="Path to the input image.")
-    ap.add_argument("-m", "--minlength",
-                    help="Minimum perimeter length wanted.")
-    args = vars(ap.parse_args())
 
-    #Loading values
-    input_file = args["input"]
-    min_length = args["minlength"]
+        # CLI arguments
+        ap = argparse.ArgumentParser()
+        ap.add_argument("-i", "--input", required="True",
+                        help="Path to the input file.")
+        ap.add_argument("-x", "--splitx",
+                        help="Divisions of the image in X axis")
+        ap.add_argument("-y", "--splity",
+                        help="Divisions of the image in Y axis")
+        args = vars(ap.parse_args())
 
-    if min_length is None:
-        min_length = 100
+        # Loading values
+        input_file = args["input"]
+        split_x = args["splitx"]
+        split_y = args["splity"]
 
-    contours = detect_contours(input_file)
-    contours = get_squares(contours)
-    print get_contour_dimension(contours[0])
-    print get_contour_area(contours[0])
-    print get_square_number(contours, min_length)
-    print get_contour_coord(contours[0])
-    print get_gray_intensity_analysis(input_file, 3, 3)
-    print get_model(input_file)
+        # Checking the input values:
+        if split_x is None:
+                split_x = 3
+        if split_y is None:
+                split_y = 3
 
-    cv.imshow("", draw_contours(input_file, contours))
-    cv.waitKey()
-    cv.destroyAllWindows()
+        get_model(input_file, split_x, split_y)
