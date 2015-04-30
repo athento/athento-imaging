@@ -10,14 +10,15 @@ function matchTemplate plus an approximation through pyramid construction to
 improve it's performance on large images.
 """
 
-def buildPyramid(input_file, max_level):
+
+def build_pyramid(input_file, max_level):
 
     image = iu.get_image(input_file)
 
     results = [image]
-    aux = image
+    aux = image.copy()
 
-    for i in range(0,max_level):
+    for i in range(0, max_level):
         aux = cv.pyrDown(aux, (aux.shape[1]/2, aux.shape[0]/2))
         results = [aux] + results
 
@@ -28,22 +29,18 @@ def temp_match(input_file, template, max_level):
 
     results = []
 
-    source_pyr = buildPyramid(input_file, max_level)
-    template_pyr = buildPyramid(template, max_level)
+    source_pyr = build_pyramid(input_file, max_level)
+    template_pyr = build_pyramid(template, max_level)
 
     for lvl in range(0, int(max_level), 1):
 
         curr_image = source_pyr[lvl]
         curr_template = template_pyr[lvl]
 
-        cv.imshow("TEMPLATE", curr_template)
-        cv.waitKey()
-        cv.destroyAllWindows()
+        shapeX = curr_image.shape[1] - curr_template.shape[1] + 1
+        shapeY = curr_image.shape[0] - curr_template.shape[1] + 1
 
-        dX = curr_image.shape[1] + 1 - curr_template.shape[1]
-        dY = curr_image.shape[0] + 1 - curr_template.shape[0]
-
-        result = np.zeros([dX, dY])
+        result = np.zeros([shapeX, shapeY])
 
 
         #On the first level performs regular template matching.
@@ -56,61 +53,51 @@ def temp_match(input_file, template, max_level):
         #previous level.
         else:
             mask = cv.pyrUp(r)
-
-            mask8u = cv.inRange(mask, 0, 255)
+            mask8u = np.uint8(mask)
             contours = cv.findContours(mask8u, cv.RETR_EXTERNAL,
                                        cv.CHAIN_APPROX_NONE)
 
             #Uses contours to define the region of interest and perform TM on
             #the areas.
 
-            for i in range(0, np.size(contours)-1):
-                x, y, w, h = cv.boundingRect(contours[i][0])
-                tpl_X = curr_template.shape[1]
-                tpl_Y = curr_template.shape[0]
+            for cnt in contours[0]:
+                x, y, w, h = cv.boundingRect(cnt)
+                dx = x + w + curr_template.shape[1] - 1
+                dy = y + h + curr_template.shape[0] - 1
 
-                #result = cv.matchTemplate(curr_image, curr_template,
-                #                          cv.TM_CCORR_NORMED)
+                result[y:h, x:w] = cv.matchTemplate(
+                    curr_image[y:dy, x:dx],
+                    curr_template,
+                    cv.TM_CCORR_NORMED)
 
-                result[y:y+h, x:x+w] = cv.matchTemplate(
-                                curr_image[y:y+h+tpl_Y, x:x+w+tpl_X],
-                                curr_template, cv.TM_CCORR_NORMED)
+        if result.all() != 0:
+            T, r = cv.threshold(result, 0.94, 1., cv.THRESH_TOZERO)
+            results.append(r)
 
-        T, r = cv.threshold(result, 0.94, 1., cv.THRESH_TOZERO)
-        cv.imshow("test", r)
-        cv.waitKey()
-        results.append(r)
+            cv.imshow("R", r)
+            cv.waitKey()
+            cv.destroyAllWindows()
+
     return results
 
 
-def ftm_pyramid(input_file, template_file, max_level = 5):
+def ftm_pyramid(input_file, template_file, max_level=5):
 
-    img = iu.get_image(input_file)
-    tpl = iu.get_image(template_file)
-
-    image = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-    template = cv.cvtColor(tpl, cv.COLOR_BGR2GRAY)
+    image = iu.get_image(input_file, 0)
+    template = iu.get_image(template_file, 0)
 
     tm_results = temp_match(image, template, max_level)
 
-    c = 0
-    flag = False
-
-    while flag is False and c < np.size(tm_results):
-        current = tm_results[c]
-        min_val, max_val, min_loc, max_loc = cv.minMaxLoc(current)
+    for r in tm_results:
+        min_val, max_val, min_loc, max_loc = cv.minMaxLoc(r)
         if max_val > 0.9:
-            cv.rectangle(img,
-                        max_loc,
-                        (max_loc[0] + template.shape[1],
-                         max_loc[1] + template.shape[0]),
-                        (0,0,255), 2)
-        else:
-            flag = True
+            cv.rectangle(image,
+                         max_loc,
+                         (max_loc[0] + template.shape[1],
+                          max_loc[1] + template.shape[0]),
+                         (0, 0, 255), 2)
 
-        c = c+1
-
-    cv.imshow("Result", img)
+    cv.imshow("Result", image)
     cv.waitKey()
     return 0
 
@@ -130,7 +117,7 @@ if __name__ == '__main__':
     template = args["template"]
     max_lvl = args["levels"]
 
-    if max_lvl == None:
+    if max_lvl is None:
         max_lvl = 5
 
-    ftm_pyramid(input_file, template, max_lvl)
+    ftm_pyramid(input_file, template, int(max_lvl))
