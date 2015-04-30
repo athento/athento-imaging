@@ -1,8 +1,11 @@
 language: python
 
+virtualenv:
+  system_site_packages: true
+
 before_install:
  - sudo apt-get update
- - sudo apt-get install python-opencv python-numpy
+ - sudo apt-get install python-numpy python-opencv
  - sudo dpkg -L python-opencv
 install:
   - "pip install --pre -r requirements.txt"
