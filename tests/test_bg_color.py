@@ -1,10 +1,10 @@
 import pytest
 import os
-from pydoccv.bg_color import clean
+from athentoimaging.bg_color import clean
 
 class Test_BGC:
 
-    test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"), "resources/", "test_image.png"))
+    test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"), "../resources/", "test_image.png"))
 
 
     #Everything works ok
@@ -22,7 +22,7 @@ class Test_BGC:
     def test_bgc_input_void(self):
         with pytest.raises(IOError) as exc:
             clean(None, 200, 3)
-        assert exc.value.message == "Input file can't be None."
+        assert exc.value.message == "The input file can't be a None object."
 
     #Error if input file not found
     def test_bgc_input_not_found(self):
@@ -34,7 +34,7 @@ class Test_BGC:
     def test_bgc_window_size_negative(self):
         with pytest.raises(ValueError) as exc:
             clean(self.test_image, 200, -3)
-        assert exc.value.message == "Window size value must be greater than 0"
+        assert exc.value.message == "Window size value must be greater than 0."
 
     #Error if window_size is even:
     def test_bgc_window_size_even(self):
