@@ -5,7 +5,7 @@ from athentoimaging.salt_pepper import clean
 class Test_SP:
 
     test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                              "../resources/", "saltpepper.png"))
+                                              "./resources/", "saltpepper.png"))
 
     #Everything works ok
     def test_sp_good(self):
