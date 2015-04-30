@@ -32,9 +32,36 @@ def detect_lines(input_file,
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    ###CONTINUE
-    """
+    >>> detect_lines(test_image, min_val=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Min_val value must be between 0 and 255.
 
+    >>> detect_lines(test_image, max_val=300)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Max_val value must be between 0 and 255.
+
+    >>> detect_lines(test_image, aperture_size=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Aperture_size value must be greater than 0.
+
+    >>> detect_lines(test_image, rho=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Rho value must be greater than 0.
+
+    >>> detect_lines(test_image, theta=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Theta value must be greater than 0.
+
+    >>> detect_lines(test_image, threshold=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Threshold value must be greater than 0.
+    """
 
     if min_val < max_val:
         image = iu.get_image(input_file, 0)
@@ -102,6 +129,75 @@ def delete_all_lines(input_file,
                      min_val=50, max_val=200, aperture_size=3,
                      rho=1, theta=np.pi/180, threshold=200,
                      line_length=1000, width=5, color=(255, 255, 255)):
+    """
+    #>>> draw_lines(test_image, test_lines)
+    #TODO
+
+    >>> delete_all_lines(None, test_lines)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be a None object
+
+    >>> delete_all_lines("", test_lines)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be ''.
+
+    >>> delete_all_lines("fakeRoute", test_lines)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: Input file not found.
+
+    >>> delete_all_lines(test_image, min_val=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Min_val value must be between 0 and 255.
+
+    >>> delete_all_lines(test_image, max_val=300)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Max_val value must be between 0 and 255.
+
+    >>> delete_all_lines(test_image, min_val=100, max_val=30)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Min_val value must be lesser than max_val.
+
+    >>> delete_all_lines(test_image, aperture_size=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Aperture_size value must be greater than 0.
+
+    >>> delete_all_lines(test_image, rho=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Rho value must be greater than 0.
+
+    >>> delete_all_lines(test_image, theta=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Theta value must be greater than 0.
+
+    >>> delete_all_lines(test_image, threshold=-3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Threshold value must be greater than 0.
+
+    >>> delete_all_lines(test_image, line_length=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Line_length value must be greater than 0.
+
+    >>> delete_all_lines(test_image, width=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Width value must be greater than 0.
+
+    >>> delete_all_lines(test_image, color=(-10, 0, 0))
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Color value must be: (0-255, 0-255, 0-255).
+    """
 
     image = iu.get_image(input_file)
 
@@ -126,14 +222,17 @@ def distance(line1, line2, line_length=1000):
     """
     #>>> line_count(test_lines)
     #TODO
+
     >>> distance(test_line1, None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Line must be a line, is None.
+
     >>> distance(None, test_line2)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Line must be a line, is None.
+
     >>> distance(test_line1, test_line2, line_length=-10)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
@@ -160,10 +259,12 @@ def distance_mean(lines, line_length=1000):
     """
     #>>> distance_mean(test_lines)
     #TODO
+
     >>> distance_mean(None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Lines can't be None.
+
     >>> distance_mean(test_lines, line_length=-10)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
@@ -289,14 +390,17 @@ def line_count(lines, line_length=1000, error=5):
     """
     #>>> line_count(test_lines)
     #TODO
+
     >>> line_count(None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Lines can't be None.
+
     >>> line_count(test_lines, line_length=-10)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Line_length value must be greater than 0.
+
     >>> line_count(test_lines, error=-10)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
@@ -356,11 +460,13 @@ def parallels(line1, line2, line_length=1000, error=5):
     ValueError: Error value must be positive (0 included).
     """
 
+    # Checking arguments
     check_line(line1)
     check_line(line2)
     check_line_length(line_length)
     check_error(error)
 
+    # Getting line coords
     l1_x1, l1_y1, l1_x2, l1_y2 = get_line_coordinates(line1, line_length)
     l2_x1, l2_y1, l2_x2, l2_y2 = get_line_coordinates(line2, line_length)
 
