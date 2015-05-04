@@ -6,7 +6,7 @@ import numpy as np
 class Test_LD:
 
         test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                              "../resources/", "lines.jpg"))
+                                              "./resources/", "lines.jpg"))
         lines = ld.detect_lines(test_image)
 
     # Tests of detect_line
