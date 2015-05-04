@@ -3,6 +3,7 @@ import cv2 as cv
 import threshold as th
 import os
 import img_utils as iu
+import numpy as np
 
 """
 This script allows to clean an image with noisy background (ie: coloured
@@ -15,8 +16,8 @@ test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
 
 def adaptive_gaussian_clean(input_file, window_size=3, block_size=11, c=5):
     """
-    #>>> adaptive_gaussian_clean(test_image,200,3)
-    #TODO return np array
+    >>> isinstance(adaptive_gaussian_clean(test_image), np.ndarray)
+    True
 
     >>> adaptive_gaussian_clean(None)
     Traceback (most recent call last):
@@ -70,13 +71,13 @@ def adaptive_gaussian_clean(input_file, window_size=3, block_size=11, c=5):
     # Removing noise by blurring and adaptive thresholding
     image = cv.GaussianBlur(image, (window_size, window_size), 0)
 
-    return th.adaptive_gaussian_apply(image, block_size, c)
+    return th.adaptive_gaussian_apply(image, block_size=block_size, c=c)
 
 
 def adaptive_mean_clean(input_file, window_size=3, block_size=11, c=5):
     """
-    #>>> adaptive_mean_clean(test_image,200,3)
-    #TODO return np array
+    >>> isinstance(adaptive_mean_clean(test_image), np.ndarray)
+    True
 
     >>> adaptive_mean_clean(None)
     Traceback (most recent call last):
@@ -130,13 +131,13 @@ def adaptive_mean_clean(input_file, window_size=3, block_size=11, c=5):
     # Removing noise by blurring and thresholding
     image = cv.GaussianBlur(image, (window_size, window_size), 0)
 
-    return th.adaptive_mean_apply(image, block_size, c)
+    return th.adaptive_mean_apply(image, block_size=block_size, c=c)
 
 
 def clean(input_file, thresh_val=200, window_size=3):
     """
-    #>>> clean(test_image,200,3)
-    #TODO return np array
+    >>> isinstance(clean(test_image), np.ndarray)
+    True
 
     >>> clean(None)
     Traceback (most recent call last):

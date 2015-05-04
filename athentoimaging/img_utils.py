@@ -34,11 +34,12 @@ def get_image(input_file, mode=1):
 
     image = input_file
 
-    if not isinstance(input_file, np.ndarray):
-        if not file_exists(image):
+    if isinstance(input_file, np.ndarray) is False:
+        if file_exists(image) is False:
             raise IOError("Input file not found.")
         image = cv.imread(input_file, mode)
-    elif mode == 0 and len(image.shape) > 2:
+
+    if mode == 0 and len(image.shape) > 2:
         image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
 
     return image

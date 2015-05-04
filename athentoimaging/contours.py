@@ -7,31 +7,26 @@ import os
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
                                           "../resources/", "test_image.png"))
 
-test_cnt1 = [[615, 21], [638, 31]]
-test_cnt2 = [[715, 31], [738, 51]]
-test_contours = [test_cnt1, test_cnt2]
-
-test_cor1 = [632, 37]
-test_cor2 = [298, 133]
-test_corners = [test_cor1, test_cor2]
-
 
 def contours_close(cnt1, cnt2, min_dist=20):
     """
-    #>>> contours_close(None, test_cnt2)
-    #TODO
+    >>> contours = detect_contours(test_image)
+    >>> cnt1 = contours[0][0]
+    >>> cnt2 = contours[0][1]
+    >>> isinstance(contours_close(cnt1, cnt2), bool)
+    True
 
-    >>> contours_close(None, test_cnt2)
+    >>> contours_close(None, cnt2)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Contour can't be None.
 
-    >>> contours_close(test_cnt1, [])
+    >>> contours_close(cnt1, [])
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Contour can't be void.
 
-    >>> contours_close(test_cnt1, test_cnt2, -20)
+    >>> contours_close(cnt1, cnt2, -20)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Min_dist value must be greater than 0.
@@ -55,8 +50,8 @@ def contours_close(cnt1, cnt2, min_dist=20):
 
 def delete_border_noise(input_file, width=20, color=(255, 255, 255)):
     """
-    #>>> delete_boder_noise(test_image)
-    #TODO
+    >>> isinstance(delete_border_noise(test_image), np.ndarray)
+    True
 
     >>> delete_border_noise(None)
     Traceback (most recent call last):
@@ -102,8 +97,9 @@ def delete_border_noise(input_file, width=20, color=(255, 255, 255)):
 
 def delete_small_contours(contours, min_dim=1000):
     """
-    #>>> delete_small_contours(test_contours)
-    #TODO
+    >>> contours = detect_contours(test_image)
+    >>> isinstance(delete_small_contours(contours), list)
+    True
 
     >>> delete_small_contours(None)
     Traceback (most recent call last):
@@ -115,7 +111,7 @@ def delete_small_contours(contours, min_dim=1000):
       File "<stdin>", line 1, in ?
     ValueError: Contours can't be void.
 
-    >>> delete_small_contours(test_contours, min_dim=-10)
+    >>> delete_small_contours(contours, min_dim=-10)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Min_dim value must be greater than 0.
@@ -136,8 +132,9 @@ def delete_small_contours(contours, min_dim=1000):
 
 def detect_contours(input_file, thresh_val=255):
     """
-    #>>> delete_boder_noise(test_image)
-    #TODO
+    >>> contours = detect_contours(test_image)
+    >>> isinstance(detect_contours(test_image), list)
+    True
 
     >>> detect_contours(None)
     Traceback (most recent call last):
@@ -154,7 +151,7 @@ def detect_contours(input_file, thresh_val=255):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    >>> detect_contours(test_contours, thresh_val=270)
+    >>> detect_contours(contours, thresh_val=270)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
@@ -181,8 +178,8 @@ def detect_contours(input_file, thresh_val=255):
 
 def detect_corners(input_file, max_corners=10, min_dist=50, trust_val=0.5):
     """
-    #>>> detect_corners(test_image)
-    #TODO
+    >>> isinstance(detect_corners(test_image), np.ndarray)
+    True
 
     >>> detect_corners(None)
     Traceback (most recent call last):
@@ -237,22 +234,22 @@ def detect_corners(input_file, max_corners=10, min_dist=50, trust_val=0.5):
 
 
 def draw_contours(input_file, contours, thickness=0, color=(0, 0, 255)):
-
     """
-    #>>> draw_contours(test_image, test_contours)
-    #TODO
+    >>> contours = detect_contours(test_image)
+    >>> isinstance(draw_contours(test_image, contours), np.ndarray)
+    True
 
-    >>> draw_contours(None, test_contours)
+    >>> draw_contours(None, contours)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be a None object
 
-    >>> draw_contours("", test_contours)
+    >>> draw_contours("", contours)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be ''.
 
-    >>> draw_contours("fakeRoute", test_contours)
+    >>> draw_contours("fakeRoute", contours)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
@@ -267,7 +264,7 @@ def draw_contours(input_file, contours, thickness=0, color=(0, 0, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Contours can't be void.
 
-    >>> draw_contours(test_image, test_contours, color=(-10, 0, 0))
+    >>> draw_contours(test_image, contours, color=(-10, 0, 0))
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
@@ -287,20 +284,21 @@ def draw_contours(input_file, contours, thickness=0, color=(0, 0, 255)):
 
 def draw_corners(input_file, corners, radius=5, color=(0, 0, 255), thickness=-1):
     """
-    #>>> draw_corners(test_image, test_corners)
-    #TODO
+    >>> corners = detect_corners(test_image)
+    >>> isinstance(draw_corners(test_image, corners), np.ndarray)
+    True
 
-    >>> draw_corners(None, test_corners)
+    >>> draw_corners(None, corners)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be a None object
 
-    >>> draw_corners("", test_corners)
+    >>> draw_corners("", corners)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be ''.
 
-    >>> draw_corners("fakeRoute", test_corners)
+    >>> draw_corners("fakeRoute", corners)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
@@ -315,12 +313,12 @@ def draw_corners(input_file, corners, radius=5, color=(0, 0, 255), thickness=-1)
       File "<stdin>", line 1, in ?
     ValueError: Corners can't be void.
 
-    >>> draw_corners(test_image, test_corners, color=(-10, 0, 0))
+    >>> draw_corners(test_image, corners, color=(-10, 0, 0))
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
 
-    >>> draw_corners(test_image, test_corners, radius=-5)
+    >>> draw_corners(test_image, corners, radius=-5)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Radius value must be greater than 0.
@@ -342,8 +340,9 @@ def draw_corners(input_file, corners, radius=5, color=(0, 0, 255), thickness=-1)
 
 def get_contour_area(contour):
     """
-    #>>> get_contour_area(test_cnt1)
-    #TODO
+    >>> contours = detect_contours(test_image)
+    >>> isinstance(get_contour_area(contours[0][0]), float)
+    True
 
     >>> get_contour_area(None)
     Traceback (most recent call last):
@@ -364,8 +363,9 @@ def get_contour_area(contour):
 
 def get_contour_coord(contour):
     """
-    #>>> get_contour_coord(test_cnt1)
-    #TODO
+    >>> contours = detect_contours(test_image)
+    >>> isinstance(get_contour_coord(contours[0][0]), np.ndarray)
+    True
 
     >>> get_contour_coord(None)
     Traceback (most recent call last):
@@ -386,8 +386,9 @@ def get_contour_coord(contour):
 
 def get_contour_dimension(contour, closed=1):
     """
-    #>>> get_contour_dimension(test_cnt1)
-    #TODO
+    >>> contours = detect_contours(test_image)
+    >>> isinstance(get_contour_dimension(contours[0]), float)
+    True
 
     >>> get_contour_dimension(None)
     Traceback (most recent call last):
@@ -408,8 +409,8 @@ def get_contour_dimension(contour, closed=1):
 
 def get_corner_number(input_file, max_corners=10, min_dist=20, trust_val=0.2):
     """
-    #>>> get_corner_number(test_image)
-    #TODO
+    >>> isinstance(get_corner_number(test_image), int)
+    True
 
     >>> get_corner_number(None)
     Traceback (most recent call last):
@@ -452,8 +453,9 @@ def get_corner_number(input_file, max_corners=10, min_dist=20, trust_val=0.2):
 
 def get_squares(contours, min_length=1000):
     """
-    #>>> get_squares(test_contours)
-    #TODO
+    >>> contours = detect_contours(test_image)
+    >>> isinstance(get_squares(contours), list)
+    True
 
     >>> get_squares(None)
     Traceback (most recent call last):
@@ -465,7 +467,7 @@ def get_squares(contours, min_length=1000):
       File "<stdin>", line 1, in ?
     ValueError: Contours can't be void.
 
-    >>> get_squares(test_contours, min_length=-100)
+    >>> get_squares(contours, min_length=-100)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Min_length value must be greater than 0.
@@ -487,8 +489,9 @@ def get_squares(contours, min_length=1000):
 
 def get_square_number(contours, min_length=1000):
     """
-    #>>> get_squares(test_contours)
-    #TODO
+    >>> contours = detect_contours(test_image)
+    >>> get_squares(contours) >= 0
+    True
 
     >>> get_squares(None)
     Traceback (most recent call last):
@@ -500,7 +503,7 @@ def get_square_number(contours, min_length=1000):
       File "<stdin>", line 1, in ?
     ValueError: Contours can't be void.
 
-    >>> get_squares(test_contours, min_length=-100)
+    >>> get_squares(contours, min_length=-100)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Min_length value must be greater than 0.
@@ -515,8 +518,9 @@ def get_square_number(contours, min_length=1000):
 
 def join_contours(contours, min_dist=20):
     """
-    #>>> join_contours(test_contours)
-    #TODO
+    >>> contours = detect_contours(test_image)
+    >>> isinstance(join_contours(contours), list)
+    True
 
     >>> join_contours(None)
     Traceback (most recent call last):
@@ -528,7 +532,7 @@ def join_contours(contours, min_dist=20):
       File "<stdin>", line 1, in ?
     ValueError: Contours can't be void.
 
-    >>> join_contours(test_contours, min_dist=-100)
+    >>> join_contours(contours, min_dist=-100)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Min_dist value must be greater than 0.

@@ -5,6 +5,11 @@ import img_utils as iu
 import cv2 as cv
 import numpy as np
 
+"""
+This module is not intended to work as a part of a production environment.
+It will be used to test some of the functions developed in the other modules.
+However images used on this table will not be provided in the repository.
+"""
 
 def analyze_all(files, min_length=1000, line_length=1000, line_error=5):
 
