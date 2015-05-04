@@ -15,4 +15,5 @@ python:
   - "2.7"
 
 script:
-  - PYTHONPATH=`pwd` py.test
+  - cd athentoimaging && python -m doctest *.py
+
