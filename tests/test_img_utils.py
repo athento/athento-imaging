@@ -6,7 +6,7 @@ import cv2 as cv
 class Test_SaveImg:
 
     test_image = cv.imread(os.path.abspath(os.path.join(os.path.dirname(
-                            "__file__"), "../resources/", "test_image.png")))
+                            "__file__"), "./resources/", "test_image.png")))
 
     """
     This test might have to be overwritten during final implementation on the
