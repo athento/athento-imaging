@@ -3,6 +3,7 @@ import numpy as np
 import argparse
 import os
 import img_utils as iu
+import threshold as th
 
 """
 This script performs a fast template matching algorithm using the OpenCV
@@ -53,7 +54,13 @@ def temp_match(input_file, template, max_level):
         #previous level.
         else:
             mask = cv.pyrUp(r)
-            mask8u = np.uint8(mask)
+
+            mask8u = np.array(mask, dtype="uint8")
+
+            cv.imshow("M8", mask8u)
+            cv.waitKey()
+            cv.destroyAllWindows()
+
             contours = cv.findContours(mask8u, cv.RETR_EXTERNAL,
                                        cv.CHAIN_APPROX_NONE)
 
@@ -70,13 +77,13 @@ def temp_match(input_file, template, max_level):
                     curr_template,
                     cv.TM_CCORR_NORMED)
 
-        if result.all() != 0:
-            T, r = cv.threshold(result, 0.94, 1., cv.THRESH_TOZERO)
-            results.append(r)
+        T, r = cv.threshold(result, 0.94, 1., cv.THRESH_TOZERO)
+        results.append(r)
 
-            cv.imshow("R", r)
-            cv.waitKey()
-            cv.destroyAllWindows()
+        cv.imshow("R", r)
+        cv.waitKey()
+        cv.destroyAllWindows()
+
 
     return results
 
@@ -88,14 +95,16 @@ def ftm_pyramid(input_file, template_file, max_level=5):
 
     tm_results = temp_match(image, template, max_level)
 
+    print len(tm_results)
+
     for r in tm_results:
         min_val, max_val, min_loc, max_loc = cv.minMaxLoc(r)
-        if max_val > 0.9:
+        if max_val > 0.99:
             cv.rectangle(image,
                          max_loc,
                          (max_loc[0] + template.shape[1],
                           max_loc[1] + template.shape[0]),
-                         (0, 0, 255), 2)
+                         (0, 0, 255), 1)
 
     cv.imshow("Result", image)
     cv.waitKey()
