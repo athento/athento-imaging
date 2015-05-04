@@ -16,3 +16,4 @@ python:
 
 script:
   - cd athentoimaging && python -m doctest *.py
+
