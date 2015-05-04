@@ -3,6 +3,7 @@ import os
 import argparse
 import threshold as th
 import img_utils as iu
+import numpy as np
 
 """
 This script cleans an image with salt and pepper noise (ie: text dotted due to
@@ -15,8 +16,8 @@ test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
 
 def clean(input_file,  thresh_val=200, window_size=5, kernel_size=5):
     """
-    #>>> clean(test_image,200,3)
-    #TODO return np array
+    >>> isinstance(clean(test_image), np.ndarray)
+    True
 
     >>> clean(None)
     Traceback (most recent call last):

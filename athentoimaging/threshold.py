@@ -2,6 +2,7 @@ import cv2 as cv
 import argparse
 import os
 import img_utils as iu
+import numpy as np
 
 """
 This script shows the results of applying threshold values to the input image
@@ -11,14 +12,14 @@ can be used in the CLI.
 
 
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                          "../resources/", "test_image.png"))
+                                          "../resources/", "input_ftm.png"))
 
 
 def adaptive_gaussian_apply(input_file, max_val=255, thresh_type=0,
                             block_size=11, c=5):
     """
-    #>>> adaptive_gaussian_apply(test_image,200,3)
-    #TODO return np array
+    >>> isinstance(adaptive_gaussian_apply(test_image), np.ndarray)
+    True
 
     >>> adaptive_gaussian_apply(None)
     Traceback (most recent call last):
@@ -80,15 +81,15 @@ def adaptive_gaussian_apply(input_file, max_val=255, thresh_type=0,
     # Loading image
     image = iu.get_image(input_file, 0)
 
-    return cv.adaptiveThreshold(image, max_val, cv.ADAPTIVE_THRESH_MEAN_C,
+    return cv.adaptiveThreshold(image, max_val, cv.ADAPTIVE_THRESH_GAUSSIAN_C,
                                 thresh_type, block_size, c)
 
 
 def adaptive_mean_apply(input_file, max_val=255, thresh_type=0,
                         block_size=11, c=5):
     """
-    #>>> adaptive_mean_apply(test_image,200,3)
-    #TODO return np array
+    >>> isinstance(adaptive_mean_apply(test_image), np.ndarray)
+    True
 
     >>> adaptive_mean_apply(None)
     Traceback (most recent call last):
@@ -156,8 +157,8 @@ def adaptive_mean_apply(input_file, max_val=255, thresh_type=0,
 
 def apply(input_file, thresh_val=200, new_value=255, thresh_type=0):
     """
-    #>>> clean(test_image,200,3)
-    #TODO return np array
+    >>> isinstance(apply(test_image), np.ndarray)
+    True
 
     >>> apply(None)
     Traceback (most recent call last):
@@ -222,6 +223,7 @@ def apply(input_file, thresh_val=200, new_value=255, thresh_type=0):
 
 
 def check_block_size(block_size):
+
     if block_size < 0:
         raise ValueError("Block size value must be greater than 0.")
 

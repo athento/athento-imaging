@@ -6,9 +6,9 @@ import img_utils as iu
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
                                               "../resources/", "lines.jpg"))
 
-test_line1 = [2, 15, 5, 20]
-test_line2 = [4, 15, 6, 20]
-test_lines = [test_line1, test_line2]
+line1 = [2, 15, 5, 20]
+line2 = [4, 15, 6, 20]
+lines = [line1, line2]
 
 
 def delete_all_lines(input_file,
@@ -17,20 +17,21 @@ def delete_all_lines(input_file,
                      min_line_length=30, max_line_gap=20,
                      width=5, color=(255, 255, 255)):
     """
-    #>>> draw_lines(test_image, test_lines)
-    #TODO
+    >>> lines = detect_lines(test_image)
+    >>> isinstance(delete_all_lines(test_image), np.ndarray)
+    True
 
-    >>> delete_all_lines(None, test_lines)
+    >>> delete_all_lines(None, lines)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be a None object
 
-    >>> delete_all_lines("", test_lines)
+    >>> delete_all_lines("", lines)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be ''.
 
-    >>> delete_all_lines("fakeRoute", test_lines)
+    >>> delete_all_lines("fakeRoute", lines)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
@@ -80,12 +81,12 @@ def delete_all_lines(input_file,
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
 
-    >>> detect_lines(test_image, min_line_length=-3)
+    >>> delete_all_lines(test_image, min_line_length=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Min_line_length value must be greater than 0.
 
-    >>> detect_lines(test_image, max_line_gap=-3)
+    >>> delete_all_lines(test_image, max_line_gap=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Max_line_gap value must be greater than 0.
@@ -110,35 +111,36 @@ def delete_all_lines(input_file,
 
 def delete_lines(input_file, lines, width=5, color=(255, 255, 255)):
     """
-    #>>> draw_lines(test_image, test_lines)
-    #TODO
+    >>> lines = detect_lines(test_image)
+    >>> isinstance(delete_lines(test_image, lines), np.ndarray)
+    True
 
-    >>> draw_lines(None, test_lines)
+    >>> delete_lines(None, lines)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be a None object
 
-    >>> draw_lines("", test_lines)
+    >>> delete_lines("", lines)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be ''.
 
-    >>> draw_lines("fakeRoute", test_lines)
+    >>> delete_lines("fakeRoute", lines)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    >>> draw_lines(test_image, None)
+    >>> delete_lines(test_image, None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Lines can't be None.
 
-    >>> draw_lines(test_image, test_lines, width=-10)
+    >>> delete_lines(test_image, lines, width=-10)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Width value must be greater than 0.
 
-    >>> draw_lines(test_image, test_lines, color=(-10, 0, 0))
+    >>> delete_lines(test_image, lines, color=(-10, 0, 0))
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
@@ -158,8 +160,8 @@ def detect_lines(input_file,
                  rho=1, theta=np.pi/180, threshold=200,
                  min_line_length=30, max_line_gap=20):
     """
-    #>>> draw_lines(test_image, test_lines)
-    #TODO
+    >>> isinstance(detect_lines(test_image), np.ndarray)
+    True
 
     >>> detect_lines(None)
     Traceback (most recent call last):
@@ -236,15 +238,18 @@ def detect_lines(input_file,
 
 def distance(line1, line2):
     """
-    #>>> line_count(test_lines)
-    #TODO
+    >>> lines = detect_lines(test_image)
+    >>> line1 = lines[0][0]
+    >>> line2 = lines[0][1]
+    >>> isinstance(distance(line1, line2), (int, list))
+    True
 
-    >>> distance(test_line1, None)
+    >>> distance(line1, None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Line must be a line, is None.
 
-    >>> distance(None, test_line2)
+    >>> distance(None, line2)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Line must be a line, is None.
@@ -266,8 +271,10 @@ def distance(line1, line2):
 
 def distance_mean(lines):
     """
-    #>>> distance_mean(test_lines)
-    #TODO
+    >>> lines = detect_lines(test_image)
+    >>> dist = distance_mean(lines)
+    >>> isinstance(dist[0], int) and isinstance(dist[1], int)
+    True
 
     >>> distance_mean(None)
     Traceback (most recent call last):
@@ -293,20 +300,21 @@ def distance_mean(lines):
 
 def draw_lines(input_file, lines, width=5, color=(0, 0, 255)):
     """
-    #>>> draw_lines(test_image, test_lines)
-    #TODO
+    >>> lines = detect_lines(test_image)
+    >>> isinstance(draw_lines(test_image, lines), np.ndarray)
+    True
 
-    >>> draw_lines(None, test_lines)
+    >>> draw_lines(None, lines)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be a None object
 
-    >>> draw_lines("", test_lines)
+    >>> draw_lines("", lines)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be ''.
 
-    >>> draw_lines("fakeRoute", test_lines)
+    >>> draw_lines("fakeRoute", lines)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
@@ -316,12 +324,12 @@ def draw_lines(input_file, lines, width=5, color=(0, 0, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Lines can't be None.
 
-    >>> draw_lines(test_image, test_lines, width=-10)
+    >>> draw_lines(test_image, lines, width=-10)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Width value must be greater than 0.
 
-    >>> draw_lines(test_image, test_lines, color=(-10, 0, 0))
+    >>> draw_lines(test_image, lines, color=(-10, 0, 0))
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
@@ -344,15 +352,16 @@ def draw_lines(input_file, lines, width=5, color=(0, 0, 255)):
 
 def line_count(lines, error=5):
     """
-    #>>> line_count(test_lines)
-    #TODO
+    >>> lines = detect_lines(test_image)
+    >>> isinstance(line_count(lines), list)
+    True
 
     >>> line_count(None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Lines can't be None.
 
-    >>> line_count(test_lines, error=-10)
+    >>> line_count(lines, error=-10)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Error value must be positive (0 included).
@@ -389,20 +398,23 @@ def line_count(lines, error=5):
 
 def parallels(line1, line2, error=5):
     """
-    #>>> parallels(test_line1, test_line2)
-    #TODO
+    >>> lines = detect_lines(test_image)
+    >>> line1 = lines[0][0]
+    >>> line2 = lines[0][1]
+    >>> isinstance(parallels(line1, line2), bool)
+    True
 
-    >>> parallels(None, test_line1)
+    >>> parallels(None, line1)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Line must be a line, is None.
 
-    >>> parallels(test_line2, None)
+    >>> parallels(line2, None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Line must be a line, is None.
 
-    >>> parallels(test_line1, test_line2, error=-10)
+    >>> parallels(line1, line2, error=-10)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Error value must be positive (0 included).

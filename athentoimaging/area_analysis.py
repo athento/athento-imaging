@@ -6,13 +6,13 @@ import os
 import argparse
 
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                          "../resources/", "test_image.png"))
+                                          "../resources/", "input_ftm.png"))
 
 
 def get_gray_intensity(input_file):
     """
-    #>>> get_gray_intensity(test_image)
-    #TODO
+    >>> isinstance(get_gray_intensity(test_image), float)
+    True
 
     >>> get_gray_intensity(None)
     Traceback (most recent call last):
@@ -31,15 +31,13 @@ def get_gray_intensity(input_file):
     """
     image = iu.get_image(input_file, 0)
 
-    if not isinstance(image, np.ndarray):
-        raise IOError("Image must be numpy array.")
     return math.floor(np.mean(image))
 
 
 def get_gray_intensity_analysis(input_file, split_x=3, split_y=3):
     """
-    #>>> get_gray_intensity_analysis(test_image)
-    #TODO
+    >>> isinstance(get_gray_intensity_analysis(test_image), list)
+    True
 
     >>> get_gray_intensity_analysis(None)
     Traceback (most recent call last):
@@ -89,37 +87,37 @@ def get_gray_intensity_analysis(input_file, split_x=3, split_y=3):
             raise Exception("Unexpected error while cropping the image.")
 
         intensity = get_gray_intensity(crop)
-        results = [intensity] + results
+        results.append(intensity)
 
     return results
 
 
 def get_model(input_file, split_x=3, split_y=3):
     """
-    #>>> get_gray_intensity_analysis(test_image)
-    #TODO
+    >>> isinstance(get_model(test_image), list)
+    True
 
-    >>> get_gray_intensity_analysis(None)
+    >>> get_model(None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be a None object
 
-    >>> get_gray_intensity_analysis("")
+    >>> get_model("")
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be ''.
 
-    >>> get_gray_intensity_analysis("fakeRoute")
+    >>> get_model("fakeRoute")
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    >>> get_gray_intensity_analysis(test_image, split_x=-1)
+    >>> get_model(test_image, split_x=-1)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: The split value must be greater than 0.
 
-    >>> get_gray_intensity_analysis(test_image, split_y=-1)
+    >>> get_model(test_image, split_y=-1)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: The split value must be greater than 0.
@@ -130,7 +128,7 @@ def get_model(input_file, split_x=3, split_y=3):
 
     mean = math.ceil(np.mean(image))
 
-    results = get_gray_intensity(input_file, split_x, split_y)
+    results = get_gray_intensity_analysis(input_file, split_x, split_y)
 
     for i, r in enumerate(results):
         if r <= mean:
