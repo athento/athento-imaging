@@ -3,12 +3,15 @@ import numpy as np
 import os
 import img_utils as iu
 
+
+"""
+This script contains basic functions to implement line detection in images
+using the HoughLinesP function.
+"""
+
+
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
                                               "../resources/", "lines.jpg"))
-
-line1 = [2, 15, 5, 20]
-line2 = [4, 15, 6, 20]
-lines = [line1, line2]
 
 
 def delete_all_lines(input_file,

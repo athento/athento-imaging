@@ -6,8 +6,6 @@ import img_utils as iu
 
 """
 This script contains auxilary functions to be used during development.
-Functions contained in this script probably won't be necessary in the product's
-integration.
 """
 
 def pyramid_clean(input_file):

@@ -9,6 +9,8 @@ import threshold as th
 This script performs a fast template matching algorithm using the OpenCV
 function matchTemplate plus an approximation through pyramid construction to
 improve it's performance on large images.
+
+In development. Fails creating the ROI.
 """
 
 
