@@ -14,58 +14,58 @@ test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
                                           "../resources/", "input_ftm.png"))
 
 
-def adaptive_gaussian_apply(input_file, max_val=255, thresh_type=0,
-                            block_size=11, c=5):
+def adaptive_threshold_apply(input_file, max_val=255, thresh_type=0,
+                            block_size=11, c=5, cv_threshold=cv.ADAPTIVE_THRESH_GAUSSIAN_C):
     """
-    >>> isinstance(adaptive_gaussian_apply(test_image), np.ndarray)
+    >>> isinstance(adaptive_threshold_apply(test_image), np.ndarray)
     True
 
-    >>> adaptive_gaussian_apply(None)
+    >>> adaptive_threshold_apply(None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be a None object
 
-    >>> adaptive_gaussian_apply("")
+    >>> adaptive_threshold_apply("")
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be ''.
 
-    >>> adaptive_gaussian_apply("fakeRoute")
+    >>> adaptive_threshold_apply("fakeRoute")
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    >>> adaptive_gaussian_apply(test_image, max_val=-3)
+    >>> adaptive_threshold_apply(test_image, max_val=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
 
-    >>> adaptive_gaussian_apply(test_image, max_val=260)
+    >>> adaptive_threshold_apply(test_image, max_val=260)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
 
-    >>> adaptive_gaussian_apply(test_image, thresh_type=-3)
+    >>> adaptive_threshold_apply(test_image, thresh_type=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Threshold_type value must be between 0 and 4.
 
-    >>> adaptive_gaussian_apply(test_image, thresh_type=6)
+    >>> adaptive_threshold_apply(test_image, thresh_type=6)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Threshold_type value must be between 0 and 4.
 
-    >>> adaptive_gaussian_apply(test_image, block_size=-3)
+    >>> adaptive_threshold_apply(test_image, block_size=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Block size value must be greater than 0.
 
-    >>> adaptive_gaussian_apply(test_image, block_size=2)
+    >>> adaptive_threshold_apply(test_image, block_size=2)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Block size value must be odd.
 
-    >>> adaptive_gaussian_apply(test_image, c='a')
+    >>> adaptive_threshold_apply(test_image, c='a')
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Constraint must be integer.
@@ -80,77 +80,7 @@ def adaptive_gaussian_apply(input_file, max_val=255, thresh_type=0,
     # Loading image
     image = iu.get_image(input_file, 0)
 
-    return cv.adaptiveThreshold(image, max_val, cv.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                thresh_type, block_size, c)
-
-
-def adaptive_mean_apply(input_file, max_val=255, thresh_type=0,
-                        block_size=11, c=5):
-    """
-    >>> isinstance(adaptive_mean_apply(test_image), np.ndarray)
-    True
-
-    >>> adaptive_mean_apply(None)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    IOError: The input file can't be a None object
-
-    >>> adaptive_mean_apply("")
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    IOError: The input file can't be ''.
-
-    >>> adaptive_mean_apply("fakeRoute")
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    IOError: Input file not found.
-
-    >>> adaptive_mean_apply(test_image, max_val=-3)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: All threshold values must be between 0 and 255.
-
-    >>> adaptive_mean_apply(test_image, max_val=260)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: All threshold values must be between 0 and 255.
-
-    >>> adaptive_mean_apply(test_image, thresh_type=-3)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Threshold_type value must be between 0 and 4.
-
-    >>> adaptive_mean_apply(test_image, thresh_type=6)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Threshold_type value must be between 0 and 4.
-
-    >>> adaptive_mean_apply(test_image, block_size=-3)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Block size value must be greater than 0.
-
-    >>> adaptive_mean_apply(test_image, block_size=2)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Block size value must be odd.
-
-    >>> adaptive_mean_apply(test_image, c='a')
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Constraint must be integer.
-    """
-
-    # Checking arguments
-    check_threshold(max_val)
-    check_thresh_type(thresh_type)
-    check_block_size(block_size)
-    check_c(c)
-
-    # Loading image
-    image = iu.get_image(input_file, 0)
-
-    return cv.adaptiveThreshold(image, max_val, cv.ADAPTIVE_THRESH_MEAN_C,
+    return cv.adaptiveThreshold(image, max_val, cv_threshold,
                                 thresh_type, block_size, c)
 
 

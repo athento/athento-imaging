@@ -108,3 +108,13 @@ def save_img(image, output_name, question):
         print "Saved as {0}.".format(output_name)
 
     return 0
+
+def check_color(color):
+
+    if len(color) == 3:
+        if (color[0] < 0 or color[0] > 255 or color[1] < 0 or color[1] > 255 or
+                color[2] < 0 or color[2] > 255):
+            raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
+    else:
+        raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
+    return 0
