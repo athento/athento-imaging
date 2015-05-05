@@ -2,7 +2,6 @@ import area_analysis as aa
 import contours as cc
 import time
 import img_utils as iu
-import cv2 as cv
 import numpy as np
 
 """

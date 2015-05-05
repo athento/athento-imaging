@@ -31,25 +31,18 @@ except the *check_argument* functions, which always return either 0 or an
 exception if any parameter is out of it's limits.
 
 
-- ####adaptive_gaussian_apply(input_file, max_val=255, thresh_type=0, block_size=11, c=5)
+- ####adaptive_threshold(input_file, max_val=255, thresh_type=0, block_size=11, c=5, cv_threshold=cv.ADAPTIVE_THRESH_GAUSSIAN_C)
                           
     - max_val: the maximum value that the adaptive threshold can set.
     - block_size: the size of the block used in adaptive thresholding.
     - c: a constraint to be subtracted in adaptive thresholding.
+    - cv_threshold: either Gaussian (cv2.ADAPTIVE_THRESH_GAUSSIAN_C) 
+    or Mean (cv2.ADAPTIVE_THRESH_MEAN_C)
                             
     Returns: the input image after a adaptive gaussian threshold.
-                  
-                            
-- ####adaptive_mean_apply(input_file, max_val=255, thresh_type=0, block_size=11, c=5)
-
-    - max_val: the maximum value that the adaptive threshold can set.
-    - block_size: the size of the block used in adaptive thresholding.
-    - c: a constraint to be subtracted in adaptive thresholding.
-
-    Returns: the input image after a adaptive mean threshold.
-                  
+                                    
                         
-- ####apply(input_file, thresh_val=200, new_value=255, thresh_type=0)
+- ####threshold(input_file, thresh_val=200, new_value=255, thresh_type=0)
 
     - thresh_val: minimum value of the pixel to apply the threshold.
     - new_value: new value of each pixel which initial value

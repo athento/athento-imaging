@@ -77,7 +77,7 @@ def clean(input_file,  thresh_val=200, window_size=5, kernel_size=5):
     image = cv.medianBlur(image, window_size)
     image = cv.erode(image, (kernel_size, kernel_size))
 
-    return th.apply(image, thresh_val)
+    return th.threshold(image, thresh_val)
 
 
 # CHECKING ARGUMENTS

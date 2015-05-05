@@ -4,6 +4,11 @@ import math
 import os
 import argparse
 
+"""
+This module implements operations to get a model of the image dividing it and
+analyzing each crop's intensity value.
+"""
+
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
                                           "../resources/", "input_ftm.png"))
 
@@ -157,6 +162,8 @@ def check_split(split):
 
 
 # CLI SETTINGS
+
+
 if __name__ == '__main__':
 
         # CLI arguments

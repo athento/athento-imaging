@@ -455,6 +455,7 @@ def line_count(lines, line_length=1000, error=5):
 
     return [total, v_lines, h_lines]
 
+
 def parallels(line1, line2, line_length=1000, error=5):
     """
     >>> lines = detect_lines(test_image)
@@ -517,6 +518,7 @@ def check_canny_args(min_val, max_val, aperture_size):
     if aperture_size < 0:
         raise ValueError("Aperture_size value must be greater than 0.")
     return 0
+
 
 def check_error(error):
 

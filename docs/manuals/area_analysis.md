@@ -27,7 +27,7 @@ exception if any parameter is out of it's limits.
 
 - ####get_gray_intensity(input_file)
 
-    Returns: the mean piel value of the input_file.
+    Returns: the mean pixel value of the input_file.
 
 - ####get_gray_intensity_analysis(input_file, split_x=3, split_y=3)
 

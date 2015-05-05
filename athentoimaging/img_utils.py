@@ -2,20 +2,21 @@ import cv2 as cv
 import numpy as np
 import os
 import math
-import img_utils as iu
 
 """
-This script contains auxilary functions to be used during development.
+This script contains auxilary functions.
 """
 
-def pyramid_clean(input_file):
 
-    image = iu.get_image(input_file)
+def check_color(color):
 
-    image = cv.pyrDown(image)
-    image = cv.pyrUp(image)
-
-    return image
+    if len(color) == 3:
+        if (color[0] < 0 or color[0] > 255 or color[1] < 0 or color[1] > 255 or
+                color[2] < 0 or color[2] > 255):
+            raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
+    else:
+        raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
+    return 0
 
 
 def file_exists(input_file):
@@ -39,6 +40,16 @@ def get_image(input_file, mode=1):
 
     if mode == 0 and len(image.shape) > 2:
         image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+
+    return image
+
+
+def pyramid_clean(input_file):
+
+    image = iu.get_image(input_file)
+
+    image = cv.pyrDown(image)
+    image = cv.pyrUp(image)
 
     return image
 
@@ -107,14 +118,4 @@ def save_img(image, output_name, question):
         cv.imwrite(output_name, image)
         print "Saved as {0}.".format(output_name)
 
-    return 0
-
-def check_color(color):
-
-    if len(color) == 3:
-        if (color[0] < 0 or color[0] > 255 or color[1] < 0 or color[1] > 255 or
-                color[2] < 0 or color[2] > 255):
-            raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
-    else:
-        raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
     return 0

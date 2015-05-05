@@ -16,6 +16,11 @@ These are some of the main arguments used in this module:
                     does the blur.
     - block_size: size of the block used in adaptive thresholding.
     - c: constraint to diminish the block mean.
+    - thresh_type: value between 0 and 4   (0-THRESH_BINARY; 
+                                            1-THRESH_BINARY_INV; 
+                                            2-THRESH_TRUNC, 
+                                            3-THRESH_TOZERO, 
+                                            4-THRESH_TOZERO_INV)
 
                   
 ###Import        
@@ -33,25 +38,9 @@ except the *check_argument* functions, which always return either 0 or an
 exception if any parameter is out of it's limits.
 
 
-- ####adaptive_gaussian_clean(input_file, kernel_size=3, block_size=11, c=5)
+- ####remove_bg(input_file, thresh_val=0, window_size=3, block_size=11, c=5, thresh_type=0):
 
     Loads the image, it applies a Gaussian Blur with the kernel_size and after it 
- uses the threshold module to apply a gaussian adaptive threshold.
- 
-    Returns: a single image, the input_file cleaned.
-
-
-- ####adaptive_mean_clean(input_file, kernel_size=3, block_size=11, c=5)
-
-    Loads the image, it applies a Gaussian Blur with the kernel_size and after it 
- uses the threshold module to apply a mean adaptive threshold.
- 
-    Returns: a single image, the input_file cleaned.
-
-
-- ####clean(input_file, thresh_val=200, kernel_size=3)
-
-    Loads the image, it applies a Gaussian Blur with the kernel_size and after it 
- uses the threshold module to apply threshold.
+ uses the threshold module to apply a specific threshold determined by thresh_type.
  
     Returns: a single image, the input_file cleaned.
