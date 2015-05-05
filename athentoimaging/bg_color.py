@@ -71,7 +71,7 @@ def adaptive_gaussian_clean(input_file, window_size=3, block_size=11, c=5):
     # Removing noise by blurring and adaptive thresholding
     image = cv.GaussianBlur(image, (window_size, window_size), 0)
 
-    return th.adaptive_gaussian_apply(image, block_size=block_size, c=c)
+    return th.adaptive_threshold_apply(image, block_size=block_size, c=c, cv_threshold=cv.ADAPTIVE_THRESH_MEAN_C)
 
 
 def adaptive_mean_clean(input_file, window_size=3, block_size=11, c=5):
@@ -131,7 +131,7 @@ def adaptive_mean_clean(input_file, window_size=3, block_size=11, c=5):
     # Removing noise by blurring and thresholding
     image = cv.GaussianBlur(image, (window_size, window_size), 0)
 
-    return th.adaptive_mean_apply(image, block_size=block_size, c=c)
+    return th.adaptive_threshold_apply(image, block_size=block_size, c=c, cv_threshold=cv.ADAPTIVE_THRESH_MEAN_C)
 
 
 def clean(input_file, thresh_val=200, window_size=3):
