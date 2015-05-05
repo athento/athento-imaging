@@ -153,8 +153,6 @@ def check_split(split):
 
 
 # CLI SETTINGS
-
-
 if __name__ == '__main__':
 
         # CLI arguments

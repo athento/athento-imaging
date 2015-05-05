@@ -81,6 +81,7 @@ def delete_all_lines(input_file,
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
+    from img_utils import check_color
 
     image = iu.get_image(input_file)
 
@@ -143,6 +144,7 @@ def delete_lines(image, lines, line_length=1000, width=5,
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
+    from img_utils import check_color
 
     check_lines(lines)
     check_line_length(line_length)
@@ -335,6 +337,7 @@ def draw_lines(input_file, lines, line_length=1000, width=5, color=(0, 0, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
+    from img_utils import check_color
 
     # Checking arguments
     check_lines(lines)
@@ -419,7 +422,8 @@ def line_count(lines, line_length=1000, error=5):
 
     # Checking arguments
     check_lines(lines)
-    check_line_length(line_length)
+    if line_length and line_length > 0:
+        check_line_length(line_length)
     check_error(error)
 
     total = 0
@@ -429,24 +433,19 @@ def line_count(lines, line_length=1000, error=5):
     # Checks the lines and compares their coordinates to get the number of
     # horizontal and vertical lines (+- error margin)
     if np.size(lines[0]) == 1:
-        x1, y1, x2, y2 = get_line_coordinates(lines, line_length)
+        l_array = [lines]
+    else:
+        l_array = lines[0]
+
+    for l in l_array:
+        x1, y1, x2, y2 = get_line_coordinates(l, line_length)
         if x1 in range(x2-error, x2+error):
             v_lines += 1
         elif y1 in range(y2-error, y2+error):
             h_lines += 1
         total += 1
 
-    else:
-        for l in lines[0]:
-            x1, y1, x2, y2 = get_line_coordinates(l, line_length)
-            if x1 in range(x2-error, x2+error):
-                v_lines += 1
-            elif y1 in range(y2-error, y2+error):
-                h_lines += 1
-            total += 1
-
     return [total, v_lines, h_lines]
-
 
 def parallels(line1, line2, line_length=1000, error=5):
     """
@@ -510,18 +509,6 @@ def check_canny_args(min_val, max_val, aperture_size):
     if aperture_size < 0:
         raise ValueError("Aperture_size value must be greater than 0.")
     return 0
-
-
-def check_color(color):
-
-    if len(color) == 3:
-        if (color[0] < 0 or color[0] > 255 or color[1] < 0 or color[1] > 255 or
-                color[2] < 0 or color[2] > 255):
-            raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
-    else:
-        raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
-    return 0
-
 
 def check_error(error):
 
