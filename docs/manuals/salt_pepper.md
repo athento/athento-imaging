@@ -15,6 +15,8 @@ save the current threshold image.
 
 ###Common arguments
 
+These are some of the main arguments used in this module:
+
     - input_file: input file, can be a file path or an image (np array).
     - thresh_val: limit value to apply threshold.
     - quality: quality to use in the pdf_to_png transformation.
@@ -26,13 +28,18 @@ save the current threshold image.
 
 ###Import
 
-To import this function into your application, you must include the following 
-line at the beginning:
+To import this module into your application, you must include the following 
+line at the beginning of your own python file:
 
         import salt_pepper as sp
 
 
 ###Functions
+
+In this section you'll find a summary of each function included in this module 
+except the *check_argument* functions, which always return either 0 or an 
+exception if any parameter is out of it's limits.
+
 
 - ####clean(input_file,  thresh_val=200, window_size=5, kernel_size=5)
 

@@ -57,6 +57,11 @@ def temp_match(input_file, template, max_level):
         else:
             mask = cv.pyrUp(r)
 
+            cv.imshow("M", mask8u)
+            cv.waitKey()
+            cv.destroyAllWindows()
+
+
             mask8u = np.array(mask, dtype="uint8")
 
             cv.imshow("M8", mask8u)

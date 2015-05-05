@@ -5,9 +5,8 @@ import img_utils as iu
 import numpy as np
 
 """
-This script shows the results of applying threshold values to the input image
-and ask the user whether he wants to save the outputted image or not. Also, it
-can be used in the CLI.
+This script implement a series of functions to implement the most commonly used
+threshold functions in OpenCV.
 """
 
 

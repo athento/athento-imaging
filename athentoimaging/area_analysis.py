@@ -1,4 +1,3 @@
-import cv2 as cv
 import numpy as np
 import img_utils as iu
 import math
@@ -122,6 +121,11 @@ def get_model(input_file, split_x=3, split_y=3):
       File "<stdin>", line 1, in ?
     ValueError: The split value must be greater than 0.
     """
+
+    # Checking arguments
+
+    check_split(split_x)
+    check_split(split_y)
 
     # Loading the image
     image = iu.get_image(input_file)

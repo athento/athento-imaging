@@ -14,7 +14,7 @@ test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
                                           "../resources/", "test_image.png"))
 
 
-def adaptive_gaussian_clean(input_file, window_size=3, block_size=11, c=5):
+def adaptive_gaussian_clean(input_file, kernel_size=3, block_size=11, c=5):
     """
     >>> isinstance(adaptive_gaussian_clean(test_image), np.ndarray)
     True
@@ -34,12 +34,12 @@ def adaptive_gaussian_clean(input_file, window_size=3, block_size=11, c=5):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    >>> adaptive_gaussian_clean(test_image, window_size=-3)
+    >>> adaptive_gaussian_clean(test_image, kernel_size=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Window size value must be greater than 0.
 
-    >>> adaptive_gaussian_clean(test_image, window_size=2)
+    >>> adaptive_gaussian_clean(test_image, kernel_size=2)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Window size value must be odd.
@@ -61,7 +61,7 @@ def adaptive_gaussian_clean(input_file, window_size=3, block_size=11, c=5):
     """
 
     # Checking arguments
-    check_window_size(window_size)
+    check_kernel_size(kernel_size)
     check_block_size(block_size)
     check_c(c)
 
@@ -69,12 +69,12 @@ def adaptive_gaussian_clean(input_file, window_size=3, block_size=11, c=5):
     image = iu.get_image(input_file)
 
     # Removing noise by blurring and adaptive thresholding
-    image = cv.GaussianBlur(image, (window_size, window_size), 0)
+    image = cv.GaussianBlur(image, (kernel_size, kernel_size), 0)
 
     return th.adaptive_gaussian_apply(image, block_size=block_size, c=c)
 
 
-def adaptive_mean_clean(input_file, window_size=3, block_size=11, c=5):
+def adaptive_mean_clean(input_file, kernel_size=3, block_size=11, c=5):
     """
     >>> isinstance(adaptive_mean_clean(test_image), np.ndarray)
     True
@@ -94,12 +94,12 @@ def adaptive_mean_clean(input_file, window_size=3, block_size=11, c=5):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    >>> adaptive_mean_clean(test_image, window_size=-3)
+    >>> adaptive_mean_clean(test_image, kernel_size=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Window size value must be greater than 0.
 
-    >>> adaptive_mean_clean(test_image, window_size=2)
+    >>> adaptive_mean_clean(test_image, kernel_size=2)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Window size value must be odd.
@@ -121,7 +121,7 @@ def adaptive_mean_clean(input_file, window_size=3, block_size=11, c=5):
     """
 
     # Checking arguments
-    check_window_size(window_size)
+    check_kernel_size(kernel_size)
     check_block_size(block_size)
     check_c(c)
 
@@ -129,12 +129,12 @@ def adaptive_mean_clean(input_file, window_size=3, block_size=11, c=5):
     image = iu.get_image(input_file)
 
     # Removing noise by blurring and thresholding
-    image = cv.GaussianBlur(image, (window_size, window_size), 0)
+    image = cv.GaussianBlur(image, (kernel_size, kernel_size), 0)
 
     return th.adaptive_mean_apply(image, block_size=block_size, c=c)
 
 
-def clean(input_file, thresh_val=200, window_size=3):
+def clean(input_file, thresh_val=200, kernel_size=3):
     """
     >>> isinstance(clean(test_image), np.ndarray)
     True
@@ -164,12 +164,12 @@ def clean(input_file, thresh_val=200, window_size=3):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
 
-    >>> clean(test_image, window_size=-3)
+    >>> clean(test_image, kernel_size=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Window size value must be greater than 0.
 
-    >>> clean(test_image, window_size=2)
+    >>> clean(test_image, kernel_size=2)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Window size value must be odd.
@@ -177,13 +177,13 @@ def clean(input_file, thresh_val=200, window_size=3):
 
     # Checking arguments and raising expected exceptions
     check_threshold(thresh_val)
-    check_window_size(window_size)
+    check_kernel_size(kernel_size)
 
     # Loading the image
     image = iu.get_image(input_file, 0)
 
     # Removing noise by blurring and thresholding
-    image = cv.GaussianBlur(image, (window_size, window_size), 0)
+    image = cv.GaussianBlur(image, (kernel_size, kernel_size), 0)
 
     return th.apply(image, thresh_val)
 
@@ -216,11 +216,11 @@ def check_threshold(value):
     return 0
 
 
-def check_window_size(window_size):
-    if window_size < 0:
+def check_kernel_size(kernel_size):
+    if kernel_size < 0:
         raise ValueError("Window size value must be greater than 0.")
 
-    if window_size % 2 == 0:
+    if kernel_size % 2 == 0:
         raise ValueError("Window size value must be odd.")
     return 0
 
@@ -236,23 +236,53 @@ if __name__ == '__main__':
                         help="Path to the input file.")
         ap.add_argument("-t", "--threshold", 
                         help="Pixel value to threshold.")
-        ap.add_argument("-w", "--windowsize",
-                        help="Odd value, size of the window used in the \
+        ap.add_argument("-w", "--kernelsize",
+                        help="Odd value, size of the kernel used in the \
                         Gaussian Blur.")
+        ap.add_argument("-b", "--blocksize",
+                        help="Size of the block of neighbours used in adaptive \
+                             thresholding")
+        ap.add_argument("-c", "--constraint",
+                        help="Constraint to substract of the neighbours mean.")
         args = vars(ap.parse_args())
 
 
         # Loading values
         input_file = args["input"]
         thresh_val = args["threshold"]
-        window_size = args["windowsize"]
+        kernel_size = args["kernelsize"]
+        block_size = args["blocksize"]
+        constraint = args["constraint"]
+
         
         # Setting values:
         if thresh_val is None:
-                thresh_val = 200
+            thresh_val = 200
         
-        if window_size is None:
-            window_size = 3
-        
-        clean(input_file, thresh_val, window_size)
+        if kernel_size is None:
+            kernel_size = 3
 
+        if block_size is None:
+            block_size = 11
+
+        if constraint is None:
+            constraint = 5
+
+        cv.imshow("Adaptive Gaussian Threshold",
+                  adaptive_gaussian_clean(input_file, kernel_size, block_size,
+                                          constraint)
+                  )
+        cv.waitKey()
+
+        cv.imshow("Adaptive Mean Threshold",
+                  adaptive_mean_clean(input_file, kernel_size, block_size,
+                                      constraint)
+                  )
+        cv.waitKey()
+
+        cv.imshow("Classical Thresholding", clean(input_file, thresh_val,
+                                                  kernel_size)
+                  )
+        cv.waitKey()
+
+        cv.destroyAllWindows()

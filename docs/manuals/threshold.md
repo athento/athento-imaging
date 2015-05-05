@@ -5,6 +5,8 @@ This script implement a series of functions to implement the most commonly used 
 
 ###Common arguments
 
+These are some of the main arguments used in this module:
+
     - input_file: input file, can be a file path or an image (np array).
     - thresh_type: value between 0 and 4   (0-THRESH_BINARY; 
                                             1-THRESH_BINARY_INV; 
@@ -16,13 +18,18 @@ This script implement a series of functions to implement the most commonly used 
 
 ###Import
     
-To import this function into your application, you must include the following 
-line at the beginning:
+To import this module into your application, you must include the following 
+line at the beginning of your own python file:
     
         import threshold as th
     
 
 ###Functions
+
+In this section you'll find a summary of each function included in this module 
+except the *check_argument* functions, which always return either 0 or an 
+exception if any parameter is out of it's limits.
+
 
 - ####adaptive_gaussian_apply(input_file, max_val=255, thresh_type=0, block_size=11, c=5)
                           
@@ -31,6 +38,7 @@ line at the beginning:
     - c: a constraint to be subtracted in adaptive thresholding.
                             
     Returns: the input image after a adaptive gaussian threshold.
+                  
                             
 - ####adaptive_mean_apply(input_file, max_val=255, thresh_type=0, block_size=11, c=5)
 
@@ -39,6 +47,7 @@ line at the beginning:
     - c: a constraint to be subtracted in adaptive thresholding.
 
     Returns: the input image after a adaptive mean threshold.
+                  
                         
 - ####apply(input_file, thresh_val=200, new_value=255, thresh_type=0)
 

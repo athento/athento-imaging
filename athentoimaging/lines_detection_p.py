@@ -5,8 +5,8 @@ import img_utils as iu
 
 
 """
-This script contains basic functions to implement line detection in images
-using the HoughLinesP function.
+This script allow to perform several operations in documents that contain lines.
+It is based on the Probabilistic Hough Line Transform implemented on OpenCV.
 """
 
 

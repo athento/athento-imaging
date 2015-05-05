@@ -1,6 +1,6 @@
 #lines_detection_p.py
 
-This script allow to perform several operations in documents that contain lines.
+This module allow to perform several operations in documents that contain lines.
 It is based on the Probabilistic Hough Line Transform implemented on OpenCV.
 
 There is no need of a get_line_coordinates in this module as the lines are
@@ -8,6 +8,8 @@ already a set of [x1, y1, x2, y2] coordinates.
 
 
 ###Common arguments
+
+These are some of the main arguments used in this module:
 
     - input_file: the path to the image or directly the image to perform lines operations on it.
     - lines: a list of lines.
@@ -22,13 +24,18 @@ already a set of [x1, y1, x2, y2] coordinates.
 
 ###Import
               
-To import this functions to your application, you must include the following line
-at the beginning of your file:
+To import this module into your application, you must include the following 
+line at the beginning of your own python file:
 
         import lines_detection_p as ldp
 
               
 ###Functions
+
+In this section you'll find a summary of each function included in this module 
+except the *check_argument* functions, which always return either 0 or an 
+exception if any parameter is out of it's limits.
+
 
 - ####delete_all_lines(input_file, width = 5, color = (255, 255, 255))
 
@@ -51,11 +58,11 @@ more lines can be found in the image.
     
     Arguments (all the arguments are used in the HoughLinesP call):
     
-        - minLineLength: the minimum  
-        - maxLineGap: maximum gap between two points to be considered in the same line. 
-        - rho: the resolution of the parameter rho in pixels.
-        - theta: the resolution of the parameter theta in radians.
-        - threshold: the minimum number of intersections to "detect" a line.
+    - minLineLength: the minimum  
+    - maxLineGap: maximum gap between two points to be considered in the same line. 
+    - rho: the resolution of the parameter rho in pixels.
+    - theta: the resolution of the parameter theta in radians.
+    - threshold: the minimum number of intersections to "detect" a line.
     
     Returns: a list of lines (each line is a set of coordinates).
     

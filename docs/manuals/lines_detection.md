@@ -1,20 +1,8 @@
 #lines_detection.py
 
-This script allows to perform several operations to implement line detection and
+This module allows to perform several operations to implement line detection and
 some line operations in documents.
 It is based on the Standard Hough Line Transform implemented on OpenCV.
-
-
-###Requirements
-
-Assuming you want to use this module, you must have installed:
-
-    - OpenCV
-    - numpy
-    - os
-    
-If you only want to use this module instead of the Athento-Imaging whole package 
-you should check the imports at the start of the module that you are interested in.
 
 
 ###Common arguments
@@ -35,13 +23,18 @@ These are some of the main arguments used in this module:
            
 ###Import
               
-To import this functions to your application, you must include the following line
-at the beginning of your file:
+To import this module into your application, you must include the following 
+line at the beginning of your own python file:
 
         import lines_detection as ld
 
               
 ###Functions
+
+In this section you'll find a summary of each function included in this module 
+except the *check_argument* functions, which always return either 0 or an 
+exception if any parameter is out of it's limits.
+
 
 - ####detect_lines(input_file, min_val=50, max_val=200, aperture_size=3, rho = 1, theta = np.pi/180, threshold = 200)
 
@@ -49,12 +42,12 @@ at the beginning of your file:
 
     Arguments (rho, theta and threshold are used in the HoughLines call):
 
-        - min_val: if intensity gradient lesser than min_val, the point is not an edge.
-        - max_val: if intensity gradient greater than max_val, the point is an edge.
-        - aperture_size: size of Sobel kernel used for find image gradients.
-        - rho: the resolution of the parameter rho in pixels.
-        - theta: the resolution of the parameter theta in radians.
-        - threshold: the minimum number of intersections to "detect" a line.
+    - min_val: if intensity gradient lesser than min_val, the point is not an edge.
+    - max_val: if intensity gradient greater than max_val, the point is an edge.
+    - aperture_size: size of Sobel kernel used for find image gradients.
+    - rho: the resolution of the parameter rho in pixels.
+    - theta: the resolution of the parameter theta in radians.
+    - threshold: the minimum number of intersections to "detect" a line.
     
     Returns: a list of lines (each line is a set of four coordinates).
 
