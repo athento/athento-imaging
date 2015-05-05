@@ -71,7 +71,7 @@ more lines can be found in the image.
 
     Calculates the mean distance between a set of lines.
 
-    Returns: the mean of the distance between each line.
+    Returns: [distance_mean_x_axis, distance_mean_y_axis]
 
 
 - ####draw_lines(input_file, lines, width=5, color=(0,0,255))
