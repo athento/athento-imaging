@@ -1,25 +1,17 @@
 #threshold.py
 
-This script applies a series of threshold values to the input image.
-
-
-###Requirements
-
-    - OpenCV
-    - argparse
-    - os
+This script implement a series of functions to implement the most commonly used threshold functions in OpenCV.
     
 
 ###Common arguments
 
     - input_file: input file, can be a file path or an image (np array).
-    - thresh_val: list of values used to threshold.
+    - thresh_type: value between 0 and 4   (0-THRESH_BINARY; 
+                                            1-THRESH_BINARY_INV; 
+                                            2-THRESH_TRUNC, 
+                                            3-THRESH_TOZERO, 
+                                            4-THRESH_TOZERO_INV)
 
-
-###Use in CLI
-
-    python threshold.py -i myImage.png 
-    python threshold.py -i myImage.png -t X, where X is the threshold value
 
 
 ###Import
@@ -27,26 +19,31 @@ This script applies a series of threshold values to the input image.
 To import this function into your application, you must include the following 
 line at the beginning:
     
-    ```from threshold import apply```
+        import threshold as th
     
 
 ###Functions
 
-####apply(input_file, thresh_values=[250, 245, 240, 230, 225, 220])
+- ####adaptive_gaussian_apply(input_file, max_val=255, thresh_type=0, block_size=11, c=5)
+                          
+    - max_val: the maximum value that the adaptive threshold can set.
+    - block_size: the size of the block used in adaptive thresholding.
+    - c: a constraint to be subtracted in adaptive thresholding.
+                            
+    Returns: the input image after a adaptive gaussian threshold.
+                            
+- ####adaptive_mean_apply(input_file, max_val=255, thresh_type=0, block_size=11, c=5)
 
-Applies each element in thresh_values to perform a threshold operation on the
-input file.
+    - max_val: the maximum value that the adaptive threshold can set.
+    - block_size: the size of the block used in adaptive thresholding.
+    - c: a constraint to be subtracted in adaptive thresholding.
 
-Returns:
+    Returns: the input image after a adaptive mean threshold.
+                        
+- ####apply(input_file, thresh_val=200, new_value=255, thresh_type=0)
 
-    A list of images with different thresh_val.
+    - thresh_val: minimum value of the pixel to apply the threshold.
+    - new_value: new value of each pixel which initial value
+     was equal or greater than thresh_val.
 
-
-####check_arguments(input_file, thresh_values)
-
-Checks that input_file exists and that each thresh_values element is greater than 
-0 and smaller than 256. Launches exceptions if any argument is not valid.
-
-Returns:
-    
-    0 if everything works ok.
+    Returns: the input image after simple threshold.
