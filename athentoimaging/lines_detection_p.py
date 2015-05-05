@@ -94,6 +94,7 @@ def delete_all_lines(input_file,
       File "<stdin>", line 1, in ?
     ValueError: Max_line_gap value must be greater than 0.
     """
+    from img_utils import check_color
 
     image = iu.get_image(input_file)
 
@@ -148,6 +149,7 @@ def delete_lines(input_file, lines, width=5, color=(255, 255, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
+    from img_utils import check_color
 
     check_lines(lines)
     check_width(width)
@@ -337,6 +339,7 @@ def draw_lines(input_file, lines, width=5, color=(0, 0, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
+    from img_utils import check_color
     image = iu.get_image(input_file)
 
     check_lines(lines)
@@ -351,52 +354,6 @@ def draw_lines(input_file, lines, width=5, color=(0, 0, 255)):
             cv.line(image, (x1, y1), (x2, y2), color, width)
 
     return image
-
-
-def line_count(lines, error=5):
-    """
-    >>> lines = detect_lines(test_image)
-    >>> isinstance(line_count(lines), list)
-    True
-
-    >>> line_count(None)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Lines can't be None.
-
-    >>> line_count(lines, error=-10)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in ?
-    ValueError: Error value must be positive (0 included).
-    """
-
-    # Checking arguments
-    check_lines(lines)
-    check_error(error)
-
-    total = 0
-    v_lines = 0
-    h_lines = 0
-
-    # Checks the lines and compares their coordinates to get the number of
-    # horizontal and vertical lines (+- error margin)
-    if np.size(lines[0]) == 1:
-        x1, y1, x2, y2, = lines
-        if x1 in range(x2-error, x2+error):
-            v_lines += 1
-        elif y1 in range(y2-error, y2+error):
-            h_lines += 1
-        total += 1
-
-    else:
-        for x1, y1, x2, y2 in lines[0]:
-            if x1 in range(x2-error, x2+error):
-                v_lines += 1
-            elif y1 in range(y2-error, y2+error):
-                h_lines += 1
-            total += 1
-
-    return [total, v_lines, h_lines]
 
 
 def parallels(line1, line2, error=5):
@@ -452,14 +409,6 @@ def check_canny_args(min_val, max_val, aperture_size):
 
     if aperture_size < 0:
         raise ValueError("Aperture_size value must be greater than 0.")
-    return 0
-
-
-def check_color(color):
-
-    if (color[0] < 0 or color[0] > 255 or color[1] < 0 or color[1] > 255 or
-                color[2] < 0 or color[2] > 255):
-        raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
     return 0
 
 

@@ -78,6 +78,7 @@ def delete_border_noise(input_file, width=20, color=(255, 255, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
+    from img_utils import check_color
 
     # Checking arguments
     check_color(color)
@@ -269,6 +270,7 @@ def draw_contours(input_file, contours, thickness=0, color=(0, 0, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
+    from img_utils import check_color
 
     # Checking arguments
     check_contours(contours)
@@ -323,6 +325,7 @@ def draw_corners(input_file, corners, radius=5, color=(0, 0, 255), thickness=-1)
       File "<stdin>", line 1, in ?
     ValueError: Radius value must be greater than 0.
     """
+    from img_utils import check_color
 
     # Checking arguments
     check_corners(corners)
@@ -567,18 +570,6 @@ def join_contours(contours, min_dist=20):
 
 
 # CHECKING ARGUMENTS
-
-
-def check_color(color):
-    if len(color) == 3:
-        if (color[0] < 0 or color[0] > 255 or color[1] < 0 or color[1] > 255 or
-                color[2] < 0 or color[2] > 255):
-            raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
-    else:
-        raise ValueError("Color value must be: (0-255, 0-255, 0-255).")
-    return 0
-
-
 def check_contour(contour):
 
     if contour is None:
