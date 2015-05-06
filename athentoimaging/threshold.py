@@ -5,9 +5,8 @@ import img_utils as iu
 import numpy as np
 
 """
-This script shows the results of applying threshold values to the input image
-and ask the user whether he wants to save the outputted image or not. Also, it
-can be used in the CLI.
+This script implement a series of functions to implement the most commonly used
+threshold functions in OpenCV.
 """
 
 
@@ -15,58 +14,59 @@ test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
                                           "../resources/", "input_ftm.png"))
 
 
-def adaptive_threshold_apply(input_file, max_val=255, thresh_type=0,
-                            block_size=11, c=5, cv_threshold=cv.ADAPTIVE_THRESH_GAUSSIAN_C):
+def adaptive_threshold(input_file, max_val=255, thresh_type=0,
+                            block_size=11, c=5,
+                            cv_threshold=cv.ADAPTIVE_THRESH_GAUSSIAN_C):
     """
-    >>> isinstance(adaptive_threshold_apply(test_image), np.ndarray)
+    >>> isinstance(adaptive_threshold(test_image), np.ndarray)
     True
 
-    >>> adaptive_threshold_apply(None)
+    >>> adaptive_threshold(None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be a None object
 
-    >>> adaptive_threshold_apply("")
+    >>> adaptive_threshold("")
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be ''.
 
-    >>> adaptive_threshold_apply("fakeRoute")
+    >>> adaptive_threshold("fakeRoute")
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    >>> adaptive_threshold_apply(test_image, max_val=-3)
+    >>> adaptive_threshold(test_image, max_val=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
 
-    >>> adaptive_threshold_apply(test_image, max_val=260)
+    >>> adaptive_threshold(test_image, max_val=260)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
 
-    >>> adaptive_threshold_apply(test_image, thresh_type=-3)
+    >>> adaptive_threshold(test_image, thresh_type=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Threshold_type value must be between 0 and 4.
 
-    >>> adaptive_threshold_apply(test_image, thresh_type=6)
+    >>> adaptive_threshold(test_image, thresh_type=6)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Threshold_type value must be between 0 and 4.
 
-    >>> adaptive_threshold_apply(test_image, block_size=-3)
+    >>> adaptive_threshold(test_image, block_size=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Block size value must be greater than 0.
 
-    >>> adaptive_threshold_apply(test_image, block_size=2)
+    >>> adaptive_threshold(test_image, block_size=2)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Block size value must be odd.
 
-    >>> adaptive_threshold_apply(test_image, c='a')
+    >>> adaptive_threshold(test_image, c='a')
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Constraint must be integer.
@@ -81,56 +81,56 @@ def adaptive_threshold_apply(input_file, max_val=255, thresh_type=0,
     # Loading image
     image = iu.get_image(input_file, 0)
 
-    return cv.adaptiveThreshold(image, max_val, cv_threshold,
-                                thresh_type, block_size, c)
+    return cv.adaptiveThreshold(image, maxValue=max_val, thresholdType=thresh_type,
+                                 blockSize=block_size, C=c, adaptiveMethod=cv_threshold)
 
 
-def apply(input_file, thresh_val=200, new_value=255, thresh_type=0):
+def threshold(input_file, thresh_val=200, new_value=255, thresh_type=0):
     """
-    >>> isinstance(apply(test_image), np.ndarray)
+    >>> isinstance(threshold(test_image), np.ndarray)
     True
 
-    >>> apply(None)
+    >>> threshold(None)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be a None object
 
-    >>> apply("")
+    >>> threshold("")
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: The input file can't be ''.
 
-    >>> apply("fakeRoute")
+    >>> threshold("fakeRoute")
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    >>> apply(test_image, thresh_val=-3)
+    >>> threshold(test_image, thresh_val=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
 
-    >>> apply(test_image, thresh_val=260)
+    >>> threshold(test_image, thresh_val=260)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
 
-    >>> apply(test_image, new_value=-3)
+    >>> threshold(test_image, new_value=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
 
-    >>> apply(test_image, new_value=260)
+    >>> threshold(test_image, new_value=260)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
 
-    >>> apply(test_image, thresh_type=-3)
+    >>> threshold(test_image, thresh_type=-3)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Threshold_type value must be between 0 and 4.
 
-    >>> apply(test_image, thresh_type=6)
+    >>> threshold(test_image, thresh_type=6)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Threshold_type value must be between 0 and 4.
@@ -204,4 +204,4 @@ if __name__ == '__main__':
         if thresh_val is None:
                 thresh_val = 200
         
-        apply(input_file, thresh_val)
+        threshold(input_file, thresh_val)

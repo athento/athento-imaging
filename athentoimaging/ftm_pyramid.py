@@ -9,6 +9,8 @@ import threshold as th
 This script performs a fast template matching algorithm using the OpenCV
 function matchTemplate plus an approximation through pyramid construction to
 improve it's performance on large images.
+
+In development. Fails creating the ROI.
 """
 
 
@@ -54,6 +56,11 @@ def temp_match(input_file, template, max_level):
         #previous level.
         else:
             mask = cv.pyrUp(r)
+
+            cv.imshow("M", mask8u)
+            cv.waitKey()
+            cv.destroyAllWindows()
+
 
             mask8u = np.array(mask, dtype="uint8")
 
