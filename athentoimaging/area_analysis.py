@@ -1,9 +1,13 @@
-import cv2 as cv
 import numpy as np
 import img_utils as iu
 import math
 import os
 import argparse
+
+"""
+This module implements operations to get a model of the image dividing it and
+analyzing each crop's intensity value.
+"""
 
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
                                           "../resources/", "input_ftm.png"))
@@ -70,7 +74,7 @@ def get_gray_intensity_analysis(input_file, split_x=3, split_y=3):
     check_split(split_y)
 
     # Loading the image
-    image = iu.get_image(input_file)
+    image = iu.get_image(input_file, 0)
 
     results = []
 
@@ -123,8 +127,13 @@ def get_model(input_file, split_x=3, split_y=3):
     ValueError: The split value must be greater than 0.
     """
 
+    # Checking arguments
+
+    check_split(split_x)
+    check_split(split_y)
+
     # Loading the image
-    image = iu.get_image(input_file)
+    image = iu.get_image(input_file, 0)
 
     mean = math.ceil(np.mean(image))
 
@@ -153,6 +162,8 @@ def check_split(split):
 
 
 # CLI SETTINGS
+
+
 if __name__ == '__main__':
 
         # CLI arguments

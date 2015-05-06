@@ -1,20 +1,10 @@
 [![Code Climate](https://codeclimate.com/repos/55394aa2e30ba00af8001be9/badges/8ee3783737be9e27c1f0/gpa.svg)](https://codeclimate.com/repos/55394aa2e30ba00af8001be9/feed) [![Build Status](https://travis-ci.org/rafaharo/athento-imaging.svg?branch=master)](https://travis-ci.org/rafaharo/athento-imaging)
 
-# Athento-imaging
+# Athento-Imaging
 
 Athento-Imaging is a package developed using Python and OpenCV to improve OCR in
 documents. Among the documents tested using this package are: passports, bills,
 delivery notes, budgets, and other common documents.
-
-This package includes several functions to transform images:
-
-- Remove coloured background.
-- Remove "salt and pepper" noise.
-- Line detection in documents (two approachs).
-- Remove lines in documents.
-- Simple line analysis (which lines are horizontal and vertical, distance between lines, etc.
-- Template matching improved using pyramid transformations.
-
 
 You can check everything out here: [Athento-Imaging Summary](<docs/SUMMARY.md>)
 

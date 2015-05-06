@@ -3,6 +3,12 @@ import numpy as np
 import img_utils as iu
 import math
 import os
+import threshold as th
+
+"This module contains a set of functions to perform operations in an image " \
+"using contours. It can be used to find out features of the document for it's " \
+"posterior clasification."
+
 
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
                                           "../resources/", "test_image.png"))
@@ -165,8 +171,8 @@ def detect_contours(input_file, thresh_val=255):
 
     gray = iu.pyramid_clean(gray)
 
-    th2 = cv.adaptiveThreshold(gray, thresh_val, cv.ADAPTIVE_THRESH_MEAN_C,
-                               cv.THRESH_BINARY, 11, 2)
+    th2 = th.adaptive_threshold(gray, max_val=thresh_val,
+                                cv_threshold=cv.ADAPTIVE_THRESH_MEAN_C)
 
     th2 = cv.erode(th2, kernel=(5, 5), iterations=30)
 
