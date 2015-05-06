@@ -74,7 +74,7 @@ def get_gray_intensity_analysis(input_file, split_x=3, split_y=3):
     check_split(split_y)
 
     # Loading the image
-    image = iu.get_image(input_file)
+    image = iu.get_image(input_file, 0)
 
     results = []
 
@@ -133,7 +133,7 @@ def get_model(input_file, split_x=3, split_y=3):
     check_split(split_y)
 
     # Loading the image
-    image = iu.get_image(input_file)
+    image = iu.get_image(input_file, 0)
 
     mean = math.ceil(np.mean(image))
 
