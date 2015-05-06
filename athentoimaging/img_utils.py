@@ -46,7 +46,7 @@ def get_image(input_file, mode=1):
 
 def pyramid_clean(input_file):
 
-    image = iu.get_image(input_file)
+    image = get_image(input_file)
 
     image = cv.pyrDown(image)
     image = cv.pyrUp(image)

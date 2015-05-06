@@ -172,7 +172,7 @@ def detect_contours(input_file, thresh_val=255):
     gray = iu.pyramid_clean(gray)
 
     th2 = th.adaptive_threshold(gray, max_val=thresh_val,
-                                thresh_type=cv.ADAPTIVE_THRESH_MEAN_C)
+                                cv_threshold=cv.ADAPTIVE_THRESH_MEAN_C)
 
     th2 = cv.erode(th2, kernel=(5, 5), iterations=30)
 
