@@ -1,4 +1,4 @@
-[![Code Climate](https://codeclimate.com/repos/55394aa2e30ba00af8001be9/badges/8ee3783737be9e27c1f0/gpa.svg)](https://codeclimate.com/repos/55394aa2e30ba00af8001be9/feed) [![Build Status](https://travis-ci.org/rafaharo/athento-imaging.svg?branch=master)](https://travis-ci.org/rafaharo/athento-imaging)
+[![Code Climate](https://codeclimate.com/repos/55394aa2e30ba00af8001be9/badges/8ee3783737be9e27c1f0/gpa.svg)](https://codeclimate.com/repos/55394aa2e30ba00af8001be9/feed) [![Build Status](https://travis-ci.org/rafaharo/athento-imaging.svg?branch=master)](https://travis-ci.org/rafaharo/athento-imaging) [![Coverage Status](https://coveralls.io/repos/rafaharo/athento-imaging/badge.svg)](https://coveralls.io/r/rafaharo/athento-imaging)
 
 # Athento-Imaging
 
