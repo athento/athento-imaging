@@ -7,16 +7,15 @@ is a crucial factor in OCR.
 To perform this operations, I have been using OpenCV, which you can download and
 learn some of it from [OpenCV.org](http://www.opencv.org)
 
-This file provides a quick overview of each module, describing in a few words the
-operations performed in each module. A complete description for each module and
-it's functions can be found in the manuals:
+This file provides a quick overview of each module, describing in a few words
+ the operations performed in each module. A complete description for each 
+ module and it's functions can be found in the manuals:
 
 - [area_analysis](manuals/area_analysis.md)
 - [bg_color](manuals/bg_color.md)
 - [contours](manuals/contours.md)
-- [ftm_pyramid](anuals/ftm_pyramid.md)
+- [ftm_pyramid](manuals/ftm_pyramid.md)
 - [lines_detection](manuals/lines_detection.md)
-- [lines_detection_p](manuals/lines_detection_p.md)
 - [salt_pepper](manuals/salt_pepper.md)
 - [threshold](manuals/threshold.md)
 
@@ -44,11 +43,8 @@ with pyramids to improve it's performance.
 - **img_utils**: module with auxiliary functions used in the whole application.
 
 - **lines_detection**: analyzes the image looking for lines in it. It may remove
-them, draw them or return some info about the lines. Lines are detected using the 
-HoughLines function.
-
-- **lines_detection_p**: equivalent to lines_detection but using a probabilistic
-approach.  Lines are detected using the HoughLinesP function.
+them, draw them or return some info about the lines. Lines are detected using
+ the HoughLines/HoughLinesP functions.
     
 - **salt_pepper**: transforms the image into grayscale and performs a complete 
 erode operation. This is used to improve the quality of the text when it has 
@@ -68,7 +64,8 @@ As those functions do not perform any computer vision operation I'm not going to
 explain much about them, you can check them directly in the code, and as you can 
 see they check the argument values.
 
-If everything is ok (each argument has a correct value) returns 0.
+If everything is ok (each argument has a correct value) the check functions 
+return 0.
 
 There are also unit tests designed with doctest, the tests checks: 
 
@@ -77,4 +74,4 @@ There are also unit tests designed with doctest, the tests checks:
 
 To test the modules (assuming you are already in the *athentoimaging* folder):
 
-        python -m doctest lines_detection.py
+        python -m doctest *.py
