@@ -1,6 +1,6 @@
 #Athento-Imaging Summary
 
-Athento-Imaging is a set of Python modules designed to implement simple computer 
+Athento-Imaging is a Python library designed to implement simple computer 
 vision operations. This package aims to perform the quality of an image as this 
 is a crucial factor in OCR.
 
@@ -58,7 +58,7 @@ plus variations).
 
 There are a few additional functions within each module, those are the "check 
 functions", which are written exclusively to get a cleaner code and allow us to 
-define and work with exceptions quickly. 
+define and work with exceptions clearly. 
 
 As those functions do not perform any computer vision operation I'm not going to
 explain much about them, you can check them directly in the code, and as you can 
@@ -75,3 +75,8 @@ There are also unit tests designed with doctest, the tests checks:
 To test the modules (assuming you are already in the *athentoimaging* folder):
 
         python -m doctest *.py
+        
+You can also test each module separately:
+
+        python -m doctest my_module.py
+

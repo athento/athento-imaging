@@ -1,13 +1,13 @@
 import cv2 as cv
 import numpy as np
 import img_utils as iu
+import threshold as th
 import math
 import os
-import threshold as th
 
 "This module contains a set of functions to perform operations in an image " \
 "using contours. It can be used to find out features of the document for it's " \
-"posterior clasification."
+"posterior classification."
 
 
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
@@ -84,10 +84,9 @@ def delete_border_noise(input_file, width=20, color=(255, 255, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
-    from img_utils import check_color
 
     # Checking arguments
-    check_color(color)
+    iu.check_color(color)
     check_width(width)
 
     image = iu.get_image(input_file)
@@ -172,7 +171,7 @@ def detect_contours(input_file, thresh_val=255):
     gray = iu.pyramid_clean(gray)
 
     th2 = th.adaptive_threshold(gray, max_val=thresh_val,
-                                cv_threshold=cv.ADAPTIVE_THRESH_MEAN_C)
+                                mode=cv.ADAPTIVE_THRESH_MEAN_C)
 
     th2 = cv.erode(th2, kernel=(5, 5), iterations=30)
 
@@ -276,11 +275,10 @@ def draw_contours(input_file, contours, thickness=0, color=(0, 0, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
-    from img_utils import check_color
 
     # Checking arguments
     check_contours(contours)
-    check_color(color)
+    iu.check_color(color)
 
     image = iu.get_image(input_file)
 
@@ -331,12 +329,11 @@ def draw_corners(input_file, corners, radius=5, color=(0, 0, 255), thickness=-1)
       File "<stdin>", line 1, in ?
     ValueError: Radius value must be greater than 0.
     """
-    from img_utils import check_color
 
     # Checking arguments
     check_corners(corners)
     check_radius(radius)
-    check_color(color)
+    iu.check_color(color)
 
     img = iu.get_image(input_file)
 
@@ -562,13 +559,12 @@ def join_contours(contours, min_dist=20):
             else:
                 if status[x] == status[i]:
                     status[x] = i+1
-
         unified = []
         maximum = int(status.max())+1
-        for i in xrange(maximum):
-            pos = np.where(status == i)[0]
+        for j in xrange(maximum):
+            pos = np.where(status == j)[0]
             if pos.size != 0:
-                cont = np.vstack(contours[i] for i in pos)
+                cont = np.vstack(contours[j] for j in pos)
                 hull = cv.convexHull(cont)
                 unified.append(hull)
 

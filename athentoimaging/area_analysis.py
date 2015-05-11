@@ -33,6 +33,7 @@ def get_gray_intensity(input_file):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
     """
+
     image = iu.get_image(input_file, 0)
 
     return math.floor(np.mean(image))
@@ -69,7 +70,7 @@ def get_gray_intensity_analysis(input_file, split_x=3, split_y=3):
     ValueError: The split value must be greater than 0.
     """
 
-    # Cheking arguments
+    # Checking arguments
     check_split(split_x)
     check_split(split_y)
 

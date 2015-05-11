@@ -1,9 +1,9 @@
 import cv2 as cv
-import os
-import argparse
 import threshold as th
 import img_utils as iu
 import numpy as np
+import os
+import argparse
 
 """
 This script cleans an image with salt and pepper noise (ie: text dotted due to
@@ -64,7 +64,8 @@ def clean(input_file,  thresh_val=200, window_size=5, kernel_size=5):
       File "<stdin>", line 1, in ?
     ValueError: Kernel size value must be odd.
     """
-    #Checking arguments
+
+    # Checking arguments
     check_kernel_size(kernel_size)
     check_threshold(thresh_val)
     check_window_size(window_size)

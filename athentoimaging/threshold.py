@@ -1,8 +1,8 @@
 import cv2 as cv
-import argparse
-import os
 import img_utils as iu
 import numpy as np
+import argparse
+import os
 
 """
 This script implement a series of functions to implement the most commonly used
@@ -14,11 +14,13 @@ test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
                                           "../resources/", "input_ftm.png"))
 
 
-def adaptive_threshold(input_file, max_val=255, thresh_type=0,
-                            block_size=11, c=5,
-                            cv_threshold=cv.ADAPTIVE_THRESH_GAUSSIAN_C):
+def adaptive_threshold(input_file, max_val=255, thresh_type=0, block_size=11,
+                       c=5, mode=0):
     """
     >>> isinstance(adaptive_threshold(test_image), np.ndarray)
+    True
+
+    >>> isinstance(adaptive_threshold(test_image, mode=1), np.ndarray)
     True
 
     >>> adaptive_threshold(None)
@@ -70,6 +72,14 @@ def adaptive_threshold(input_file, max_val=255, thresh_type=0,
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: Constraint must be integer.
+    >>> adaptive_threshold(test_image, c='a')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Constraint must be integer.
+    >>> adaptive_threshold(test_image, mode=-1)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Mode values are: 0 (Gaussian) and 1 (Mean).
     """
 
     # Checking arguments
@@ -78,11 +88,18 @@ def adaptive_threshold(input_file, max_val=255, thresh_type=0,
     check_block_size(block_size)
     check_c(c)
 
+    if mode == 0:
+        mode = cv.ADAPTIVE_THRESH_GAUSSIAN_C
+    elif mode == 1:
+        mode = cv.ADAPTIVE_THRESH_MEAN_C
+    else:
+        raise ValueError("Mode values are: 0 (Gaussian) and 1 (Mean).")
+
     # Loading image
     image = iu.get_image(input_file, 0)
 
     return cv.adaptiveThreshold(image, maxValue=max_val, thresholdType=thresh_type,
-                                 blockSize=block_size, C=c, adaptiveMethod=cv_threshold)
+                                 blockSize=block_size, C=c, adaptiveMethod=mode)
 
 
 def threshold(input_file, thresh_val=200, new_value=255, thresh_type=0):
@@ -135,6 +152,7 @@ def threshold(input_file, thresh_val=200, new_value=255, thresh_type=0):
       File "<stdin>", line 1, in ?
     ValueError: Threshold_type value must be between 0 and 4.
     """
+
     # Checking arguments
     check_threshold(thresh_val)
     check_threshold(new_value)

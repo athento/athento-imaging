@@ -1,9 +1,9 @@
-import argparse
 import cv2 as cv
 import threshold as th
-import os
 import img_utils as iu
 import numpy as np
+import argparse
+import os
 
 """
 This script allows to clean an image with noisy background (ie: coloured
@@ -15,15 +15,15 @@ test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
 
 
 def remove_bg(input_file, thresh_val=0, window_size=3, block_size=11, c=5,
-              thresh_type=0):
+              mode=0, thresh_type=0):
     """
     >>> isinstance(remove_bg(test_image), np.ndarray)
     True
 
-    >>> isinstance(remove_bg(test_image, thresh_type=1), np.ndarray)
+    >>> isinstance(remove_bg(test_image, mode=1), np.ndarray)
     True
 
-    >>> isinstance(remove_bg(test_image, thresh_type=2), np.ndarray)
+    >>> isinstance(remove_bg(test_image, mode=2), np.ndarray)
     True
 
     >>> remove_bg(None)
@@ -69,12 +69,22 @@ def remove_bg(input_file, thresh_val=0, window_size=3, block_size=11, c=5,
     >>> remove_bg(test_image, thresh_type=-1)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
-    ValueError: Thres_type value must be between 0 and 2. (0-Simple, 1 - Adapt-Gauss, 2 - Adapt-Mean)
+    ValueError: Threshold_type value must be between 0 and 4.
 
-    >>> remove_bg(test_image, thresh_type=3)
+    >>> remove_bg(test_image, thresh_type=6)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
-    ValueError: Thres_type value must be between 0 and 2. (0-Simple, 1 - Adapt-Gauss, 2 - Adapt-Mean)
+    ValueError: Threshold_type value must be between 0 and 4.
+
+    >>> remove_bg(test_image, mode=-1)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Thres_type value must be between 0 and 2 (0-Adapt-Gauss, 1-Adapt-Mean, 2-Simple).
+
+    >>> remove_bg(test_image, mode=3)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Thres_type value must be between 0 and 2 (0-Adapt-Gauss, 1-Adapt-Mean, 2-Simple).
     """
 
     # Checking arguments
@@ -82,7 +92,7 @@ def remove_bg(input_file, thresh_val=0, window_size=3, block_size=11, c=5,
     check_window_size(window_size)
     check_block_size(block_size)
     check_c(c)
-    check_thresh_type(thresh_type)
+    check_mode(mode)
 
     # Loading image
     image = iu.get_image(input_file)
@@ -92,14 +102,11 @@ def remove_bg(input_file, thresh_val=0, window_size=3, block_size=11, c=5,
 
     result = []
 
-    if thresh_type == 0:
-        result = th.threshold(image, thresh_val)
-    elif thresh_type == 1:
+    if mode == 2:
+        result = th.threshold(image, thresh_val, thresh_type=thresh_type)
+    else:
         result = th.adaptive_threshold(image, block_size=block_size, c=c,
-                                             cv_threshold=cv.ADAPTIVE_THRESH_GAUSSIAN_C)
-    elif thresh_type == 2:
-        result = th.adaptive_threshold(image, block_size=block_size, c=c,
-                                             cv_threshold=cv.ADAPTIVE_THRESH_MEAN_C)
+                                       mode=mode, thresh_type=thresh_type)
 
     return result
 
@@ -124,12 +131,11 @@ def check_c(c):
     return 0
 
 
-def check_window_size(window_size):
-    if window_size < 0:
-        raise ValueError("Window size value must be greater than 0.")
+def check_mode(type):
 
-    if window_size % 2 == 0:
-        raise ValueError("Window size value must be odd.")
+    if type < 0 or type > 2:
+        raise ValueError("Thres_type value must be between 0 and 2 ("
+                         "0-Adapt-Gauss, 1-Adapt-Mean, 2-Simple).")
     return 0
 
 
@@ -141,10 +147,19 @@ def check_threshold(value):
     return 0
 
 
-def check_thresh_type(type):
+def check_thresh_type(value):
 
-    if type < 0 or type > 2:
-        raise ValueError("Thres_type value must be between 0 and 2. (0-Simple, 1 - Adapt-Gauss, 2 - Adapt-Mean)")
+    if int(value) < 0 or int(value) > 4:
+        raise ValueError("Threshold_type value must be between 0 and 4.")
+    return 0
+
+
+def check_window_size(window_size):
+    if window_size < 0:
+        raise ValueError("Window size value must be greater than 0.")
+
+    if window_size % 2 == 0:
+        raise ValueError("Window size value must be odd.")
     return 0
 
 
@@ -171,7 +186,6 @@ if __name__ == '__main__':
                         help="[0-2] depending on the threshold wanted.")
         args = vars(ap.parse_args())
 
-
         # Loading values
         input_file = args["input"]
         thresh_val = args["threshold"]
@@ -180,7 +194,6 @@ if __name__ == '__main__':
         constraint = args["constraint"]
         option = args["option"]
 
-        
         # Setting values:
         if thresh_val is None:
             thresh_val = 200
