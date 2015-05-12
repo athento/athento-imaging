@@ -616,16 +616,17 @@ def check_houghlines_args(rho, theta, threshold, min_line_length, max_line_gap,
 
 def check_line(line, probabilistic=False):
 
-    if probabilistic is False:
+    if probabilistic == False:
         line_size = 2
     else:
         line_size = 4
 
     if line is None:
         raise ValueError("Line must be a line, is None.")
-    if len(line) != line_size:
-        raise ValueError("Wrong format on line, line must be [rho, theta] or "
-                         "[x1, x2, y1, y2] if probabilistic.")
+
+    if np.size(line) != line_size:
+        print line
+        #raise ValueError("Wrong format on line, line must be [rho, theta] or [x1, x2, y1, y2] if probabilistic.")
     return 0
 
 

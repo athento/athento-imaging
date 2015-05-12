@@ -11,7 +11,7 @@ bad pixel definition).
 """
 
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                          "../resources/", "test_image.png"))
+                                          "../resources/", "saltpepper.png"))
 
 
 def clean(input_file,  thresh_val=200, window_size=5, kernel_size=5):
@@ -78,7 +78,7 @@ def clean(input_file,  thresh_val=200, window_size=5, kernel_size=5):
     image = cv.medianBlur(image, window_size)
     image = cv.erode(image, (kernel_size, kernel_size))
 
-    return th.threshold(image, thresh_val)
+    return th.adaptive_threshold(image, thresh_val)
 
 
 # CHECKING ARGUMENTS
@@ -113,14 +113,14 @@ def check_window_size(window_size):
 
 # CLI SETTINGS
 
-        
+
 if __name__ == '__main__':
-        
+
         # CLI arguments
         ap = argparse.ArgumentParser()
-        ap.add_argument("-i", "--input", required="True", 
+        ap.add_argument("-i", "--input", required="True",
                         help="Path to the input file.")
-        ap.add_argument("-t", "--threshold", 
+        ap.add_argument("-t", "--threshold",
                         help="Pixel value to threshold.")
         ap.add_argument("-k", "--kernel-size",
                         help="Kernel size used in erode operation.")
@@ -128,21 +128,21 @@ if __name__ == '__main__':
                         help="Odd value, size of the window used in the \
                         Gaussian Blur.")
         args = vars(ap.parse_args())
-        
+
         # Loading values
         input_file = args["input"]
         kernel_size = args["kernel-size"]
         thresh_val = args["threshold"]
         window_size = args["window-size"]
-        
+
         # Checking the input values:
         if thresh_val is None:
                 thresh_val = 200
 
         if window_size is None:
                 window_size = 5
-        
+
         if kernel_size is None:
                 kernel_size = 5
-        
+
         clean(input_file, thresh_val, window_size, kernel_size)

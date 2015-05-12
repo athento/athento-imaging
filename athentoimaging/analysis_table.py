@@ -97,23 +97,10 @@ if __name__ == '__main__':
 
     start = time.time()
 
-    # CLI arguments
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-i", "--input", required="True",
-                    help="Path to the input file.")
-    ap.add_argument("-t", "--type", required="True",
-                    help="Input file type")
-    args = vars(ap.parse_args())
+    files = ["../resources/dni.png", "../resources/license.png",
+            "../resources/technical.png"]
 
-    files = args["input"]
-
-    if not isinstance(files, list):
-        files = [files]
-
-    types = args["type"]
-
-    if not isinstance(types, list):
-        types = [types]
+    types = ["DNI", "Lic.", "Tech."]
 
     show_table(analyze_all(files), types)
 

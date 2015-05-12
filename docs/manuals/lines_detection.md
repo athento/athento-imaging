@@ -113,3 +113,23 @@ respectively) is constant (+- error argument value).
     Checks if two lines are parallels, within an expected margin of error in pixels.
 
     Returns: True or false.
+
+
+###Examples
+
+In this case, the important thing is the difference between both sets of lines detected (standard and probabilistic).
+
+Let's use this sudoku as example:
+
+![sudoku](../../resources/lines.jpg)
+
+This are the lines detected by default:
+
+![sudoku-normal](../../resources/lines-output.jpg)
+
+And this are the ones detected by a probabilistic approach:
+
+![sudoku-probabilistic](../../resources/lines-p-output.jpg)
+
+
+Although this example may induce you to think that the probabilistic approach isn't a valid one, you might face images where the probabilistic approach is way better than the standard.

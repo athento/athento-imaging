@@ -11,7 +11,7 @@ background).
 """
 
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                          "../resources/", "test_image.png"))
+                                          "../resources/", "bgcolor.png"))
 
 
 def remove_bg(input_file, thresh_val=0, window_size=3, block_size=11, c=5,
@@ -97,7 +97,7 @@ def remove_bg(input_file, thresh_val=0, window_size=3, block_size=11, c=5,
     # Loading image
     image = iu.get_image(input_file)
 
-    # Removing noise by blurring and adaptive thresholding
+    # Removing noise by blurring and thresholding
     image = cv.GaussianBlur(image, (window_size, window_size), 0)
 
     result = []
@@ -167,12 +167,12 @@ def check_window_size(window_size):
 
 
 if __name__ == '__main__':
-        
+
         # CLI arguments
         ap = argparse.ArgumentParser()
-        ap.add_argument("-i", "--input", required="True", 
+        ap.add_argument("-i", "--input", required="True",
                         help="Path to the input file.")
-        ap.add_argument("-t", "--threshold", 
+        ap.add_argument("-t", "--threshold",
                         help="Pixel value to threshold.")
         ap.add_argument("-w", "--windowsize",
                         help="Odd value, size of the kernel used in the \
@@ -197,7 +197,7 @@ if __name__ == '__main__':
         # Setting values:
         if thresh_val is None:
             thresh_val = 200
-        
+
         if window_size is None:
             window_size = 3
 

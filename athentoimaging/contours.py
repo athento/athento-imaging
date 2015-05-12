@@ -11,7 +11,7 @@ import os
 
 
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                          "../resources/", "test_image.png"))
+                                          "../resources/", "technical.png"))
 
 
 def contours_close(cnt1, cnt2, min_dist=20):
@@ -572,6 +572,7 @@ def join_contours(contours, min_dist=20):
 
 
 # CHECKING ARGUMENTS
+
 def check_contour(contour):
 
     if contour is None:

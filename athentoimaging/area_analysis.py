@@ -10,7 +10,7 @@ analyzing each crop's intensity value.
 """
 
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                          "../resources/", "input_ftm.png"))
+                                          "../resources/", "license.png"))
 
 
 def get_gray_intensity(input_file):

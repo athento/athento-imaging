@@ -169,7 +169,6 @@ def threshold(input_file, thresh_val=200, new_value=255, thresh_type=0):
 
 # CHECKING ARGUMENTS
 
-
 def check_block_size(block_size):
 
     if block_size < 0:
@@ -205,15 +204,15 @@ def check_thresh_type(value):
 
 
 if __name__ == '__main__':
-        
+
         # CLI arguments
         ap = argparse.ArgumentParser()
-        ap.add_argument("-i", "--input", required="True", 
+        ap.add_argument("-i", "--input", required="True",
                         help="Path to the input file.")
-        ap.add_argument("-t", "--threshold", 
+        ap.add_argument("-t", "--threshold",
                         help="Pixel value to threshold.")
         args = vars(ap.parse_args())
-        
+
         # Loading values
         input_file = args["input"]
         thresh_val = args["threshold"]
@@ -221,5 +220,5 @@ if __name__ == '__main__':
         # Checking the input values:
         if thresh_val is None:
                 thresh_val = 200
-        
+
         threshold(input_file, thresh_val)
