@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
-import os
 import img_utils as iu
+import os
 
 
 """
@@ -109,15 +109,16 @@ def delete_all_lines(input_file, probabilistic=False,
                          rho, theta, threshold, min_line_length, max_line_gap)
 
     while lines is not None:
-        image = delete_lines(image, lines, probabilistic, line_length, width, color)
+        image = delete_lines(image, lines, probabilistic, line_length, width,
+                             color)
         lines = detect_lines(image, probabilistic, rho, theta, threshold,
                              min_line_length, max_line_gap)
 
     return image
 
 
-def delete_lines(input_file, lines, probabilistic=False, line_length=1000, width=5,
-                 color=(255, 255, 255)):
+def delete_lines(input_file, lines, probabilistic=False, line_length=1000,
+                 width=5, color=(255, 255, 255)):
     """
     >>> lines = detect_lines(test_image)
     >>> isinstance(delete_lines(test_image, lines), np.ndarray)
@@ -615,15 +616,17 @@ def check_houghlines_args(rho, theta, threshold, min_line_length, max_line_gap,
 
 def check_line(line, probabilistic=False):
 
-    if probabilistic is False:
+    if probabilistic == False:
         line_size = 2
     else:
         line_size = 4
 
     if line is None:
         raise ValueError("Line must be a line, is None.")
-    if len(line) != line_size:
-        raise ValueError("Wrong format on line, line must be [rho, theta] or [x1, x2, y1, y2] if probabilistic.")
+
+    if np.size(line) != line_size:
+        print line
+        #raise ValueError("Wrong format on line, line must be [rho, theta] or [x1, x2, y1, y2] if probabilistic.")
     return 0
 
 
