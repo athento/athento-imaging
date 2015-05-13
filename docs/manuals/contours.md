@@ -56,11 +56,30 @@ exception if any parameter is out of it's limits.
     Load the image in grayscale, applies adaptive threshold and then an erode operation
     so it creates "pixel blocks" which can be analyzed after to extract features.
 
-    - thresh_val: max_val parameter of th.adaptive_mean_apply
+    - thresh_val: max_val parameter of th.adaptive_mean_apply.
     - k_size: size of the kernel. The bigger it is, the bigger is the area considered in the erode function.
     - iterations: number of iterations in the erode function. The bigger it is, more times the erode function executes (ending up in better defined pixel blocks).
 
+    Typically the thresh_val value will be between 200-250 as most documents have a clear background (usually white, 255) and the text is in a darker color (< 100).
+
+    As for k_size, it's value must be positive and odd. Small values are often more than enough (3-5-7 and 11 are the most common ones), being the iterations value the one that has to be incremented to increase the density of the pixel block.
+
+    Iterations usually needs to be bigger the bigger is the space between the initial pixel blocks, depending on the document typical values are usually between 5 and 50).
+
     Returns: a list of contours.
+
+    A contour is a set of pixels in a list, so let's imagine that we have detected a contour within our image and we want to select just that region of the image to apply, for example, template matching:
+
+    ```
+    image = iu.get_image("my_file_path)")
+    contours = detect_contours(image)
+    # Let's select the first contour to designate it as a ROI, 
+    # for example to apply template matching on it.
+
+    x, y, w, h = get_contour_coord(contours[0])
+
+    ROI = image[x:x+w, y:y+h]
+    ```
 
 
 - ####detect_corners(input_file, max_corners=10, min_dist=50, trust_val=0.5)
@@ -71,6 +90,10 @@ exception if any parameter is out of it's limits.
     - max_corners: maximum number of corners to detect.
     - min_dist: minimum distance between corners.
     - trust_val: value between 0 and 1, trust value of the pixel being a corner.
+
+    Min_dist depends on the shape of the image, but usually you want a value between 50 and 200 to get the corners to be separated enough.
+
+    Trust_val indicates "how hard" is for a point to be a corner. Increase to get less corners.
 
     Returns: a list of points which are probably corners.
 
@@ -103,7 +126,7 @@ exception if any parameter is out of it's limits.
 
 - ####get_contour_coord(contour)
 
-    Returns: the coordinates of the contour.
+    Returns: the boundingRect coordinates of the contour.
 
 
 - ####get_contour_dimension(contour, closed=1)
