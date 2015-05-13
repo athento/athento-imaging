@@ -136,7 +136,7 @@ def delete_small_contours(contours, min_dim=1000):
     return new_contours
 
 
-def detect_contours(input_file, thresh_val=255):
+def detect_contours(input_file, thresh_val=255, k_size=5, iterations=30):
     """
     >>> contours = detect_contours(test_image)
     >>> isinstance(detect_contours(test_image), list)
@@ -157,23 +157,37 @@ def detect_contours(input_file, thresh_val=255):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    >>> detect_contours(contours, thresh_val=270)
+    >>> detect_contours(test_image, thresh_val=270)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
+
+    >>> detect_contours(test_image, k_size=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Kernel size value must be greater than 0.
+
+    >>> detect_contours(test_image, iterations=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Iterations value must be greater than 0.
     """
+
+    gray = iu.get_image(input_file, 0)
 
     # Checking arguments
     check_threshold(thresh_val)
+    check_kernel(k_size)
+    check_iterations(iterations)
 
-    gray = iu.get_image(input_file, 0)
+
 
     gray = iu.pyramid_clean(gray)
 
     th2 = th.adaptive_threshold(gray, max_val=thresh_val,
                                 mode=cv.ADAPTIVE_THRESH_MEAN_C)
 
-    th2 = cv.erode(th2, kernel=(5, 5), iterations=30)
+    th2 = cv.erode(th2, kernel=(k_size, k_size), iterations=iterations)
 
     th2 = cv.bitwise_not(th2)
 
@@ -522,6 +536,65 @@ def get_square_number(contours, min_length=1000):
     return len(get_squares(contours, min_length))
 
 
+def in_contour(input_file, point, squares=True, thresh_val=255, k_size=5, iterations=30):
+    """
+    >>> isinstance(in_contour(test_image, (200, 200)), np.ndarray)
+    True
+
+    >>> in_contour(test_image, (0, 0))
+    -1
+
+    >>> in_contour(None, (0,0))
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be a None object
+
+    >>> in_contour("", (0,0))
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be ''.
+
+    >>> in_contour("fakeRoute", (0,0))
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: Input file not found.
+
+    >>> in_contour(test_image, (0,0), thresh_val=-200)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: All threshold values must be between 0 and 255.
+
+    >>> in_contour(test_image, (0,0), k_size=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Kernel size value must be greater than 0.
+
+    >>> in_contour(test_image, (0,0), iterations=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Iterations value must be greater than 0.
+    """
+    image = iu.get_image(input_file)
+
+    check_threshold(thresh_val)
+    check_kernel(k_size)
+    check_iterations(iterations)
+
+    contours = detect_contours(image, thresh_val, k_size, iterations)
+
+    if squares == True:
+        contours = get_squares(contours)
+        contours = join_contours(contours)
+
+    cnt = -1
+
+    for c in contours:
+        if cv.pointPolygonTest(c, point, measureDist=False) >= 0:
+            cnt = c
+
+    return cnt
+
+
 def join_contours(contours, min_dist=20):
     """
     >>> contours = detect_contours(test_image)
@@ -597,6 +670,21 @@ def check_corners(corners):
         raise ValueError("Corners can't be None.")
     if corners == []:
         raise ValueError("Corners can't be void.")
+    return 0
+
+def check_iterations(iterations):
+
+    if iterations < 0:
+        raise ValueError("Iterations value must be greater than 0.")
+    return 0
+
+
+def check_kernel(kernel_size):
+    if kernel_size < 0:
+        raise ValueError("Kernel size value must be greater than 0.")
+
+    if kernel_size % 2 == 0:
+        raise ValueError("Kernel size value must be odd.")
     return 0
 
 
