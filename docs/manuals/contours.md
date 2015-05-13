@@ -9,7 +9,7 @@ It can be used to find out features of the document for it's posterior clasifica
 These are some of the main arguments used in this module:
 
     - input_file: input file, can be a file path or an image (np array).
-    - contours: set of contours, preferibly detected by detect_contours
+    - contours: set of contours, preferably detected by detect_contours
     - contour, cnt1, cnt2: single contours.
 
 
@@ -44,19 +44,21 @@ exception if any parameter is out of it's limits.
 
 - ####delete_small_contours(contours, min_dim=1000)
 
-    Delete the small contours from list.
+    Delete the small contours from contour list.
 
     - min_dim: minimum contour dimension accepted.
 
     Returns: a list of contours with a *min_dim* dimension.
 
 
-- ####detect_contours(input_file, thresh_val=255)
+- ####detect_contours(input_file, thresh_val=255, k_size=5, iterations=30)
 
     Load the image in grayscale, applies adaptive threshold and then an erode operation
     so it creates "pixel blocks" which can be analyzed after to extract features.
 
     - thresh_val: max_val parameter of th.adaptive_mean_apply
+    - k_size: size of the kernel. The bigger it is, the bigger is the area considered in the erode function.
+    - iterations: number of iterations in the erode function. The bigger it is, more times the erode function executes (ending up in better defined pixel blocks).
 
     Returns: a list of contours.
 
@@ -70,7 +72,7 @@ exception if any parameter is out of it's limits.
     - min_dist: minimum distance between corners.
     - trust_val: value between 0 and 1, trust value of the pixel being a corner.
 
-    Returns: a list of poinst which are probably corners.
+    Returns: a list of points which are probably corners.
 
 
 - ####draw_contours(input_file, contours, thickness=0, color=(0, 0, 255))
@@ -125,6 +127,15 @@ exception if any parameter is out of it's limits.
 - ####get_square_number(contours, min_length=1000)
 
     Returns: the length of the list returned by get_squares.
+
+
+- ####in_contour(input_file, point, squares=True, thresh_val=255, k_size=5, iterations=30)
+
+    - point: [x, y] point to check.
+    - squares: sets if the contours must be squared or not.
+    - thresh_val, k_size and iterations are the same parameters used in detect_contours
+
+    Returns: the contour that contains the point or -1 if none contains it.
 
 
 - ####join_contours(contours, min_dist=20)
