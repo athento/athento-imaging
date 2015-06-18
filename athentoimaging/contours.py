@@ -1,17 +1,17 @@
 import cv2 as cv
 import numpy as np
 import img_utils as iu
+import threshold as th
 import math
 import os
-import threshold as th
 
 "This module contains a set of functions to perform operations in an image " \
 "using contours. It can be used to find out features of the document for it's " \
-"posterior clasification."
+"posterior classification."
 
 
 test_image = os.path.abspath(os.path.join(os.path.dirname("__file__"),
-                                          "../resources/", "test_image.png"))
+                                          "../resources/", "technical.png"))
 
 
 def contours_close(cnt1, cnt2, min_dist=20):
@@ -84,10 +84,9 @@ def delete_border_noise(input_file, width=20, color=(255, 255, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
-    from img_utils import check_color
 
     # Checking arguments
-    check_color(color)
+    iu.check_color(color)
     check_width(width)
 
     image = iu.get_image(input_file)
@@ -137,7 +136,7 @@ def delete_small_contours(contours, min_dim=1000):
     return new_contours
 
 
-def detect_contours(input_file, thresh_val=255):
+def detect_contours(input_file, thresh_val=255, k_size=5, iterations=30):
     """
     >>> contours = detect_contours(test_image)
     >>> isinstance(detect_contours(test_image), list)
@@ -158,23 +157,37 @@ def detect_contours(input_file, thresh_val=255):
       File "<stdin>", line 1, in ?
     IOError: Input file not found.
 
-    >>> detect_contours(contours, thresh_val=270)
+    >>> detect_contours(test_image, thresh_val=270)
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     ValueError: All threshold values must be between 0 and 255.
+
+    >>> detect_contours(test_image, k_size=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Kernel size value must be greater than 0.
+
+    >>> detect_contours(test_image, iterations=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Iterations value must be greater than 0.
     """
+
+    gray = iu.get_image(input_file, 0)
 
     # Checking arguments
     check_threshold(thresh_val)
+    check_kernel(k_size)
+    check_iterations(iterations)
 
-    gray = iu.get_image(input_file, 0)
+
 
     gray = iu.pyramid_clean(gray)
 
     th2 = th.adaptive_threshold(gray, max_val=thresh_val,
-                                cv_threshold=cv.ADAPTIVE_THRESH_MEAN_C)
+                                mode=cv.ADAPTIVE_THRESH_MEAN_C)
 
-    th2 = cv.erode(th2, kernel=(5, 5), iterations=30)
+    th2 = cv.erode(th2, kernel=(k_size, k_size), iterations=iterations)
 
     th2 = cv.bitwise_not(th2)
 
@@ -276,11 +289,10 @@ def draw_contours(input_file, contours, thickness=0, color=(0, 0, 255)):
       File "<stdin>", line 1, in ?
     ValueError: Color value must be: (0-255, 0-255, 0-255).
     """
-    from img_utils import check_color
 
     # Checking arguments
     check_contours(contours)
-    check_color(color)
+    iu.check_color(color)
 
     image = iu.get_image(input_file)
 
@@ -331,12 +343,11 @@ def draw_corners(input_file, corners, radius=5, color=(0, 0, 255), thickness=-1)
       File "<stdin>", line 1, in ?
     ValueError: Radius value must be greater than 0.
     """
-    from img_utils import check_color
 
     # Checking arguments
     check_corners(corners)
     check_radius(radius)
-    check_color(color)
+    iu.check_color(color)
 
     img = iu.get_image(input_file)
 
@@ -525,6 +536,65 @@ def get_square_number(contours, min_length=1000):
     return len(get_squares(contours, min_length))
 
 
+def in_contour(input_file, point, squares=True, thresh_val=255, k_size=5, iterations=30):
+    """
+    >>> isinstance(in_contour(test_image, (200, 200)), np.ndarray)
+    True
+
+    >>> in_contour(test_image, (0, 0))
+    -1
+
+    >>> in_contour(None, (0,0))
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be a None object
+
+    >>> in_contour("", (0,0))
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: The input file can't be ''.
+
+    >>> in_contour("fakeRoute", (0,0))
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    IOError: Input file not found.
+
+    >>> in_contour(test_image, (0,0), thresh_val=-200)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: All threshold values must be between 0 and 255.
+
+    >>> in_contour(test_image, (0,0), k_size=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Kernel size value must be greater than 0.
+
+    >>> in_contour(test_image, (0,0), iterations=-10)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in ?
+    ValueError: Iterations value must be greater than 0.
+    """
+    image = iu.get_image(input_file)
+
+    check_threshold(thresh_val)
+    check_kernel(k_size)
+    check_iterations(iterations)
+
+    contours = detect_contours(image, thresh_val, k_size, iterations)
+
+    if squares == True:
+        contours = get_squares(contours)
+        contours = join_contours(contours)
+
+    cnt = -1
+
+    for c in contours:
+        if cv.pointPolygonTest(c, point, measureDist=False) >= 0:
+            cnt = c
+
+    return cnt
+
+
 def join_contours(contours, min_dist=20):
     """
     >>> contours = detect_contours(test_image)
@@ -562,13 +632,12 @@ def join_contours(contours, min_dist=20):
             else:
                 if status[x] == status[i]:
                     status[x] = i+1
-
         unified = []
         maximum = int(status.max())+1
-        for i in xrange(maximum):
-            pos = np.where(status == i)[0]
+        for j in xrange(maximum):
+            pos = np.where(status == j)[0]
             if pos.size != 0:
-                cont = np.vstack(contours[i] for i in pos)
+                cont = np.vstack(contours[j] for j in pos)
                 hull = cv.convexHull(cont)
                 unified.append(hull)
 
@@ -576,6 +645,7 @@ def join_contours(contours, min_dist=20):
 
 
 # CHECKING ARGUMENTS
+
 def check_contour(contour):
 
     if contour is None:
@@ -600,6 +670,21 @@ def check_corners(corners):
         raise ValueError("Corners can't be None.")
     if corners == []:
         raise ValueError("Corners can't be void.")
+    return 0
+
+def check_iterations(iterations):
+
+    if iterations < 0:
+        raise ValueError("Iterations value must be greater than 0.")
+    return 0
+
+
+def check_kernel(kernel_size):
+    if kernel_size < 0:
+        raise ValueError("Kernel size value must be greater than 0.")
+
+    if kernel_size % 2 == 0:
+        raise ValueError("Kernel size value must be odd.")
     return 0
 
 

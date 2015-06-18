@@ -102,7 +102,7 @@ def save_img(image, output_name, question):
     if output_name is None:
         raise ValueError("The output name can't be a None object.")
 
-    #CHANGE THE NEXT FEW LINES TO CHANGE THE INPUT SYSTEM
+    #REPLACE THE NEXT FEW LINES TO CHANGE THE INPUT SYSTEM
     ans = input(question)
 
     # Checks that the input is within the correct values

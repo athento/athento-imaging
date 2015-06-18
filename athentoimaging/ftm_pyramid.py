@@ -1,9 +1,7 @@
 import cv2 as cv
 import numpy as np
 import argparse
-import os
 import img_utils as iu
-import threshold as th
 
 """
 This script performs a fast template matching algorithm using the OpenCV

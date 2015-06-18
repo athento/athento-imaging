@@ -7,29 +7,30 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
  
 setup(
-    name = 'athentoimaging',
-    version = '0.1',
-    packages = ['athentoimaging'],
-    install_requires =  [
+    name='athentoimaging',
+    version='0.9',
+    packages=['athentoimaging'],
+    install_requires=[
         'argparse',
         'numpy',
         'os',
-        'math'
+        'math',
+        'time'
     ],
-    include_package_data = True,
-    license = 'Athento Shared Source License',
-    description = 'Image cleaning and OCR improvement package in Python using OpenCV.',
-    long_description = README,
-    url = 'http://www.athento.com/',
-    author = 'Daniel Ramirez Torres, Jose Luis de la Rosa',
-    author_email = 'dramireztorres@gmail.com, jlr@athento.com',
-    classifiers =[
-        'Development Status :: 3 - Alpha',
+    include_package_data=True,
+    license='Athento Shared Source License',
+    description='Image cleaning and OCR improvement package in Python using '
+                'OpenCV.',
+    long_description=README,
+    url='http://www.athento.com/',
+    author='Daniel Ramirez Torres, Jose Luis de la Rosa',
+    author_email='dramireztorres@gmail.com, jlr@athento.com',
+    classifiers=[
+        'Development Status :: 4 - Beta',
         'Environment :: Other Environment',
         'Intended Audience :: Developers',
         'License :: Other/Proprietary License',
-        'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python',
+        'Operating System :: Unix',
         'Programming Language :: Python :: 2.7',
         'Topic :: Software Development :: Libraries',
     ]
