@@ -378,7 +378,9 @@ def get_contour_area(contour):
     # Checking arguments
     check_contour(contour)
 
-    return math.floor(cv.contourArea(contour))
+    x, y, w, h = cv.boundingRect(cnt)
+
+    return [x, y, x+w, y+h]
 
 
 def get_contour_coord(contour):
@@ -401,7 +403,7 @@ def get_contour_coord(contour):
     # Checking arguments
     check_contour(contour)
 
-    return contour
+    return cv.boundingRect(contour)
 
 
 def get_contour_dimension(contour, closed=1):
